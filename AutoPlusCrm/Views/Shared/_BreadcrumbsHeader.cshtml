@@ -1,0 +1,19 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model BreadcrumbViewModel
+@{
+
+}
+
+<h1 class="mt-4">@Model.PageTitle</h1>
+<ol class="breadcrumb mb-4">
+    @foreach (var item in Model.BreadcrumbItems)
+    {
+        <li class="breadcrumb-item">
+            <a asp-controller="@item.ControllerName" asp-action="@item.ActionName"> @item.ActionName </a>
+        </li>
+    }
+  
+    <li class="breadcrumb-item active">@Model.PageTitle</li>
+</ol>
