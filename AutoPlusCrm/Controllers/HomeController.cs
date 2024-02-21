@@ -1,11 +1,12 @@
 using ApCrm.Models;
-//using AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace ApCrm.Controllers
 {
-    public class HomeController : Controller
+    [Authorize]
+	public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
 
@@ -16,8 +17,12 @@ namespace ApCrm.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
+            if (User?.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            return RedirectToAction("Login");
+		}
 
         public IActionResult Privacy()
         {
@@ -30,6 +35,11 @@ namespace ApCrm.Controllers
         }
 
         public ViewResult Customers()
+        {
+            return View();
+        }
+
+        public ViewResult Visits()
         {
             return View();
         }

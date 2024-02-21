@@ -37,6 +37,10 @@
       "PackagePath": "staticwebassets\\js\\site.js"
     },
     {
+      "Id": "C:\\C#\\AutoPlusCrm\\AutoPlusCrm\\wwwroot\\lib\\Images\\APLogo.jpg",
+      "PackagePath": "staticwebassets\\lib\\Images\\APLogo.jpg"
+    },
+    {
       "Id": "C:\\C#\\AutoPlusCrm\\AutoPlusCrm\\wwwroot\\lib\\bootstrap\\LICENSE",
       "PackagePath": "staticwebassets\\lib\\bootstrap"
     },

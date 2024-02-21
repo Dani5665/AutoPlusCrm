@@ -9,5 +9,7 @@ namespace AutoPlusCrm.Data
             : base(options)
         {
         }
+
+
     }
 }
