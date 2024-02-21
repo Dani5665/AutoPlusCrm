@@ -1,0 +1,74 @@
+﻿@{
+    ViewData["Title"] = "Customers";
+
+    var ViewModel = new BreadcrumbViewModel
+            {
+                PageTitle = "Customers",
+                BreadcrumbItems = new List<BreadcrumbItem>
+        {
+           new BreadcrumbItem {
+                ControllerName = "Home",
+                ActionName = "Customers"
+            },
+            // new BreadcrumbItem
+            // {
+            //     ControllerName = "Home",
+            //     ActionName = "Create"
+            // }
+        }
+            };
+}
+
+
+@Html.Partial("_BreadcrumbsHeader", @ViewModel)
+
+
+<div class="form-outline fc-customSearch" data-mdb-input-init>
+    <input type="search" id="form1" class="form-control" placeholder="Търси посещения" aria-label="Search" />
+</div>
+
+<div class="d-grid gap-2 col-6 mx-auto fc-customButton-create">
+    <button class="btn btn-primary" type="button" data-mdb-ripple-init>Ново посещение</button>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        DataTable Example
+    </div>
+    <div class="card-body">
+        <table id="datatablesSimple">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Office</th>
+                    <th>Age</th>
+                    <th>Start date</th>
+                    <th>Salary</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Office</th>
+                    <th>Age</th>
+                    <th>Start date</th>
+                    <th>Salary</th>
+                </tr>
+            </tfoot>
+            <tbody>
+                <tr>
+                    <td>Tiger Nixon</td>
+                    <td>System Architect</td>
+                    <td>Edinburgh</td>
+                    <td>61</td>
+                    <td>2011/04/25</td>
+                    <td>$320,800</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
