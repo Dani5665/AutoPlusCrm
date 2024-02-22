@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AutoPlusCrm.Data.Models
 {
-    public class ClientTypeModel
+    public class VisitGradeModel
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(20)]
-        [Comment("The type of the client (Store, Service...)")]
-        public string Type { get; set; } = string.Empty;
+        [StringLength(10)]
+        [Comment("A grade of the visit (Positive/Neutral/Negative)")]
+        public string Grade { get; set; } = string.Empty;
     }
 }
