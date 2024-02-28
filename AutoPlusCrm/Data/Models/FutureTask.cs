@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AutoPlusCrm.Data.Models
 {
-    public class TaskModel
+    public class FutureTask
     {
         [Key]
         public int Id { get; set; }

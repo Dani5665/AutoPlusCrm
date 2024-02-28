@@ -1,0 +1,102 @@
+﻿@model ClientFormViewModel
+@{
+    ViewBag.Title = "Създай клиент";
+}
+
+<h2 class="text-center">Създаване на нов клиент</h2>
+<hr />
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-controller="Customer" asp-action="Add" method="post">
+            <div class="form-group">
+                <label asp-for="@Model.Name">Клиент</label>
+                <input asp-for="@Model.Name" class="form-control" id="clientFormControlName">
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.City">Град</label>
+                <input asp-for="@Model.City" class="form-control" id="clientFormControlCity">
+                <span asp-validation-for="@Model.City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Address">Адрес</label>
+                <input asp-for="@Model.Address" class="form-control" id="clientFormControlAddress">
+                <span asp-validation-for="@Model.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Bulstat">Булстат</label>
+                <input asp-for="@Model.Bulstat" class="form-control" id="clientFormControlBulstat">
+                <span asp-validation-for="@Model.Bulstat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.AccountablePerson">МОЛ</label>
+                <input asp-for="@Model.AccountablePerson" class="form-control" id="clientFormControlAccountablePerson">
+                <span asp-validation-for="@Model.AccountablePerson" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.PersonToContact">Лице за контакт</label>
+                <input asp-for="@Model.PersonToContact" class="form-control" id="clientFormControlPersonToContact">
+                <span asp-validation-for="@Model.PersonToContact" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.PhoneNumber">Телефон</label>
+                <input asp-for="@Model.PhoneNumber" class="form-control" id="clientFormControlPhoneNumber">
+                <span asp-validation-for="@Model.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Email">Имейл</label>
+                <input asp-for="@Model.Email" class="form-control" id="clientFormControlEmail">
+                <span asp-validation-for="@Model.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.CatalogueUser">Потребител каталог</label>
+                <input asp-for="@Model.CatalogueUser" class="form-control" id="clientFormControlCatalogueUser">
+                <span asp-validation-for="@Model.CatalogueUser" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.CataloguePassword">Парола каталог</label>
+                <input asp-for="@Model.CataloguePassword" class="form-control" id="clientFormControlCataloguePassword">
+                <span asp-validation-for="@Model.CataloguePassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.SkypeUser">Скайп</label>
+                <input asp-for="@Model.SkypeUser" class="form-control" id="clientFormControlSkypeUser">
+                <span asp-validation-for="@Model.SkypeUser" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.WebsiteUrl">Уебсайт адрес</label>
+                <input asp-for="@Model.WebsiteUrl" class="form-control" id="clientFormControlWebsiteUrl">
+                <span asp-validation-for="@Model.WebsiteUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.MainDiscount">Основна отстъпка</label>
+                <input asp-for="@Model.MainDiscount" class="form-control" id="clientFormControlMainDiscount">
+                <span asp-validation-for="@Model.MainDiscount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.CreditLimit">Кредитен лимит</label>
+                <input asp-for="@Model.CreditLimit" class="form-control" id="clientFormControlCreditLimit">
+                <span asp-validation-for="@Model.CreditLimit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.DelayedPaymentPeriod">Срок отложено плащане</label>
+                <input asp-for="@Model.DelayedPaymentPeriod" class="form-control" id="clientFormControlDelayedPaymentPeriod">
+                <span asp-validation-for="@Model.DelayedPaymentPeriod" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.ClientDescription">Кратко описание на клиента</label>
+                <textarea asp-for="@Model.ClientDescription" class="form-control" id="clientFormControlClientDescription" rows="3"></textarea>
+                <span asp-validation-for="@Model.ClientDescription" class="text-danger"></span>
+            </div>
+            <div class="d-grid gap-2 col-6 mx-auto fc-customButton-create">
+                <input class="btn btn-primary" type="submit" value="Създай" />
+            </div>
+        </form>
+    </div>
+</div>
+@section ValidationScripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

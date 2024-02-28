@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoPlusCrm.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240222223045_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240228193609_MakingNullableFields")]
+    partial class MakingNullableFields
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace AutoPlusCrm.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AutoPlusCrm.Data.Models.ClientModel", b =>
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.Client", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,61 +35,53 @@ namespace AutoPlusCrm.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AccountablePerson")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasComment("Name of the accountable person (MOL)");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
                         .HasComment("Address of client");
 
                     b.Property<string>("Bulstat")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasComment("Firm bulstat");
 
                     b.Property<string>("CataloguePassword")
-                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)")
                         .HasComment("Password for the catalogue");
 
                     b.Property<string>("CatalogueUser")
-                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)")
                         .HasComment("Username for the catalogue");
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasComment("City where the client is registered");
 
                     b.Property<string>("ClientDescription")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)")
                         .HasComment("Short description about the client");
 
-                    b.Property<int>("CreditLimitModelId")
+                    b.Property<int?>("CreditLimitId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DelayedPaymentPeriod")
+                    b.Property<int?>("DelayedPaymentPeriod")
                         .HasColumnType("int")
                         .HasComment("Delayed payment period in days");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasComment("Client email address");
 
-                    b.Property<int>("MainDiscountModelId")
+                    b.Property<int?>("MainDiscountId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -99,39 +91,100 @@ namespace AutoPlusCrm.Data.Migrations
                         .HasComment("Name of the client");
 
                     b.Property<string>("PersonToContact")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasComment("Person to contact");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasComment("Client phone number");
 
                     b.Property<string>("SkypeUser")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasComment("Skype username");
 
                     b.Property<string>("WebsiteUrl")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasComment("Website url");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreditLimitModelId");
-
-                    b.HasIndex("MainDiscountModelId");
-
-                    b.ToTable("ClientModels");
+                    b.ToTable("Clients");
                 });
 
-            modelBuilder.Entity("AutoPlusCrm.Data.Models.ClientTypeModel", b =>
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.ClientStore", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasComment("The address of the store");
+
+                    b.Property<string>("CataloguePassword")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasComment("Password for AP catalogue");
+
+                    b.Property<string>("CatalogueUser")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasComment("Username for AP catalogue");
+
+                    b.Property<int?>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasComment("The email of the person to contact");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasComment("The name of the store");
+
+                    b.Property<int?>("NumberOfMechanics")
+                        .HasMaxLength(5)
+                        .HasColumnType("int")
+                        .HasComment("The number of mechanics in the store");
+
+                    b.Property<int?>("NumberOfVehicles")
+                        .HasMaxLength(5)
+                        .HasColumnType("int")
+                        .HasComment("The number of vehicles in the store");
+
+                    b.Property<int?>("NumberOfWorkers")
+                        .HasMaxLength(5)
+                        .HasColumnType("int")
+                        .HasComment("The number of workers in the store");
+
+                    b.Property<string>("PersonToContact")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasComment("The name of the person to contact");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasComment("The phone number of the person to contact");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("Stores");
+                });
+
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.ClientType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -147,10 +200,10 @@ namespace AutoPlusCrm.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ClientTypeModels");
+                    b.ToTable("ClientTypes");
                 });
 
-            modelBuilder.Entity("AutoPlusCrm.Data.Models.CreditLimitModel", b =>
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.CreditLimit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -158,126 +211,26 @@ namespace AutoPlusCrm.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ClientModelId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CreditLimit")
+                    b.Property<int>("ClientId")
                         .HasColumnType("int")
-                        .HasComment("Number of the credit limit");
+                        .HasComment("Id of the client");
 
                     b.Property<DateTime>("DateAndTime")
                         .HasColumnType("datetime2")
                         .HasComment("Date and time when the credit limit was created");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClientModelId");
-
-                    b.ToTable("CreditLimitModels");
-                });
-
-            modelBuilder.Entity("AutoPlusCrm.Data.Models.MainDiscountModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ClientModelId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateAndTime")
-                        .HasColumnType("datetime2")
-                        .HasComment("Date and time when the discount was created");
-
-                    b.Property<int>("DiscountPercentage")
+                    b.Property<int>("Value")
                         .HasColumnType("int")
-                        .HasComment("Number of the discount in percentage");
+                        .HasComment("Number of the credit limit");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientModelId");
+                    b.HasIndex("ClientId");
 
-                    b.ToTable("MainDiscountModels");
+                    b.ToTable("CreditLimits");
                 });
 
-            modelBuilder.Entity("AutoPlusCrm.Data.Models.StoreModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasComment("The address of the store");
-
-                    b.Property<string>("CataloguePassword")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasComment("Password for AP catalogue");
-
-                    b.Property<string>("CatalogueUser")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasComment("Username for AP catalogue");
-
-                    b.Property<int?>("ClientModelId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasComment("The email of the person to contact");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasComment("The name of the store");
-
-                    b.Property<int>("NumberOfMechanics")
-                        .HasMaxLength(5)
-                        .HasColumnType("int")
-                        .HasComment("The number of mechanics in the store");
-
-                    b.Property<int>("NumberOfVehicles")
-                        .HasMaxLength(5)
-                        .HasColumnType("int")
-                        .HasComment("The number of vehicles in the store");
-
-                    b.Property<int>("NumberOfWorkers")
-                        .HasMaxLength(5)
-                        .HasColumnType("int")
-                        .HasComment("The number of workers in the store");
-
-                    b.Property<string>("PersonToContact")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasComment("The name of the person to contact");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasComment("The phone number of the person to contact");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClientModelId");
-
-                    b.ToTable("StoreModels");
-                });
-
-            modelBuilder.Entity("AutoPlusCrm.Data.Models.TaskModel", b =>
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.FutureTask", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -315,10 +268,10 @@ namespace AutoPlusCrm.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TaskModels");
+                    b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("AutoPlusCrm.Data.Models.VisitGradeModel", b =>
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.MainDiscount", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -326,24 +279,39 @@ namespace AutoPlusCrm.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Grade")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)")
-                        .HasComment("A grade of the visit (Positive/Neutral/Negative)");
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int")
+                        .HasComment("Id of the client");
+
+                    b.Property<DateTime>("DateAndTime")
+                        .HasColumnType("datetime2")
+                        .HasComment("Date and time when the discount was created");
+
+                    b.Property<int>("DiscountPercentage")
+                        .HasColumnType("int")
+                        .HasComment("Number of the discount in percentage");
 
                     b.HasKey("Id");
 
-                    b.ToTable("VisitGradeModels");
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("MainDiscounts");
                 });
 
-            modelBuilder.Entity("AutoPlusCrm.Data.Models.VisitModel", b =>
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.Visit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int")
+                        .HasComment("Id of the client");
+
+                    b.Property<int?>("ClientStoreId")
+                        .HasColumnType("int");
 
                     b.Property<string>("CustomerComments")
                         .IsRequired()
@@ -354,9 +322,6 @@ namespace AutoPlusCrm.Data.Migrations
                     b.Property<DateTime>("DateOfVisit")
                         .HasColumnType("datetime2")
                         .HasComment("The date when the visit happened");
-
-                    b.Property<int?>("StoreModelId")
-                        .HasColumnType("int");
 
                     b.Property<string>("TakenActions")
                         .IsRequired()
@@ -381,11 +346,30 @@ namespace AutoPlusCrm.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StoreModelId");
+                    b.HasIndex("ClientStoreId");
 
                     b.HasIndex("VisitGradelId");
 
-                    b.ToTable("VisitModels");
+                    b.ToTable("Visits");
+                });
+
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.VisitGrade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Grade")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)")
+                        .HasComment("A grade of the visit (Positive/Neutral/Negative)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("VisitGrades");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -590,53 +574,42 @@ namespace AutoPlusCrm.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("AutoPlusCrm.Data.Models.ClientModel", b =>
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.ClientStore", b =>
                 {
-                    b.HasOne("AutoPlusCrm.Data.Models.CreditLimitModel", "CreditLimit")
-                        .WithMany()
-                        .HasForeignKey("CreditLimitModelId")
+                    b.HasOne("AutoPlusCrm.Data.Models.Client", null)
+                        .WithMany("ClientStore")
+                        .HasForeignKey("ClientId");
+                });
+
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.CreditLimit", b =>
+                {
+                    b.HasOne("AutoPlusCrm.Data.Models.Client", "Client")
+                        .WithMany("CreditLimits")
+                        .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AutoPlusCrm.Data.Models.MainDiscountModel", "MainDiscount")
-                        .WithMany()
-                        .HasForeignKey("MainDiscountModelId")
+                    b.Navigation("Client");
+                });
+
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.MainDiscount", b =>
+                {
+                    b.HasOne("AutoPlusCrm.Data.Models.Client", "Client")
+                        .WithMany("MainDiscounts")
+                        .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CreditLimit");
-
-                    b.Navigation("MainDiscount");
+                    b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("AutoPlusCrm.Data.Models.CreditLimitModel", b =>
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.Visit", b =>
                 {
-                    b.HasOne("AutoPlusCrm.Data.Models.ClientModel", null)
-                        .WithMany("CreditLimitHistoryList")
-                        .HasForeignKey("ClientModelId");
-                });
-
-            modelBuilder.Entity("AutoPlusCrm.Data.Models.MainDiscountModel", b =>
-                {
-                    b.HasOne("AutoPlusCrm.Data.Models.ClientModel", null)
-                        .WithMany("DiscountHistoryList")
-                        .HasForeignKey("ClientModelId");
-                });
-
-            modelBuilder.Entity("AutoPlusCrm.Data.Models.StoreModel", b =>
-                {
-                    b.HasOne("AutoPlusCrm.Data.Models.ClientModel", null)
-                        .WithMany("Stores")
-                        .HasForeignKey("ClientModelId");
-                });
-
-            modelBuilder.Entity("AutoPlusCrm.Data.Models.VisitModel", b =>
-                {
-                    b.HasOne("AutoPlusCrm.Data.Models.StoreModel", null)
+                    b.HasOne("AutoPlusCrm.Data.Models.ClientStore", null)
                         .WithMany("Visits")
-                        .HasForeignKey("StoreModelId");
+                        .HasForeignKey("ClientStoreId");
 
-                    b.HasOne("AutoPlusCrm.Data.Models.VisitGradeModel", "VisitGrade")
+                    b.HasOne("AutoPlusCrm.Data.Models.VisitGrade", "VisitGrade")
                         .WithMany()
                         .HasForeignKey("VisitGradelId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -696,16 +669,16 @@ namespace AutoPlusCrm.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AutoPlusCrm.Data.Models.ClientModel", b =>
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.Client", b =>
                 {
-                    b.Navigation("CreditLimitHistoryList");
+                    b.Navigation("ClientStore");
 
-                    b.Navigation("DiscountHistoryList");
+                    b.Navigation("CreditLimits");
 
-                    b.Navigation("Stores");
+                    b.Navigation("MainDiscounts");
                 });
 
-            modelBuilder.Entity("AutoPlusCrm.Data.Models.StoreModel", b =>
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.ClientStore", b =>
                 {
                     b.Navigation("Visits");
                 });

@@ -24,26 +24,6 @@ namespace ApCrm.Controllers
             return RedirectToAction("Login");
 		}
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        public ViewResult Calendar()
-        {
-            return View();
-        }
-
-        public ViewResult Customers()
-        {
-            return View();
-        }
-
-        public ViewResult Visits()
-        {
-            return View();
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

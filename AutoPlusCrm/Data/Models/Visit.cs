@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoPlusCrm.Data.Models
 {
-    public class VisitModel
+    public class Visit
     {
         [Key]
         public int Id { get; set; }
@@ -32,11 +32,15 @@ namespace AutoPlusCrm.Data.Models
         public int VisitGradelId { get; set; }
 
         [ForeignKey(nameof(VisitGradelId))]
-        public VisitGradeModel VisitGrade { get; set; } = null!;
+        public VisitGrade VisitGrade { get; set; } = null!;
 
         [Required]
         [MaxLength(20)]
         [Comment("The name of the user that created the task")]
         public string VisitCreator { get; set; } = string.Empty;
+
+        [Required]
+        [Comment("Id of the client")]
+        public int ClientId { get; set; }
     }
 }

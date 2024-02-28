@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AutoPlusCrm.Controllers
 {
     [Authorize]
-    public class VisitsController : Controller
+    public class VisitController : Controller
     {
         public IActionResult Index()
         {

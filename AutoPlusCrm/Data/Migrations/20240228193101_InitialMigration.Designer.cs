@@ -4,6 +4,7 @@ using AutoPlusCrm.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoPlusCrm.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240228193101_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,7 +69,7 @@ namespace AutoPlusCrm.Data.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasComment("Short description about the client");
 
-                    b.Property<int?>("CreditLimitId")
+                    b.Property<int>("CreditLimitId")
                         .HasColumnType("int");
 
                     b.Property<int?>("DelayedPaymentPeriod")
@@ -78,7 +81,7 @@ namespace AutoPlusCrm.Data.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasComment("Client email address");
 
-                    b.Property<int?>("MainDiscountId")
+                    b.Property<int>("MainDiscountId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
