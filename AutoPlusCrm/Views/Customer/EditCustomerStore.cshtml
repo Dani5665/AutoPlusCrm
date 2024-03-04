@@ -1,0 +1,62 @@
+﻿@model ClientStoreFormViewModel
+@{
+    ViewBag.Title = "Редактирай обект";
+}
+
+<h2 class="text-center">Редактиране на обект</h2>
+<hr />
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-controller="Customer" asp-action="EditCustomerStore" method="post">
+            <div class="form-group">
+                <label asp-for="@Model.Name">Име на магазина</label>
+                <input asp-for="@Model.Name" class="form-control" id="clientStoreFormControlName">
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Address">Адрес</label>
+                <input asp-for="@Model.Address" class="form-control" id="clientStoreFormControlAddress">
+                <span asp-validation-for="@Model.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.NumberOfWorkers">Брой работни места</label>
+                <input asp-for="@Model.NumberOfWorkers" class="form-control" id="clientStoreFormControlNumberOfWorkers">
+                <span asp-validation-for="@Model.NumberOfWorkers" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.NumberOfMechanics">Брой монтьори</label>
+                <input asp-for="@Model.NumberOfMechanics" class="form-control" id="clientStoreFormControlNumberOfMechanics">
+                <span asp-validation-for="@Model.NumberOfMechanics" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.NumberOfVehicles">Брой превозни средства</label>
+                <input asp-for="@Model.NumberOfVehicles" class="form-control" id="clientStoreFormControlNumberOfVehicles">
+                <span asp-validation-for="@Model.NumberOfVehicles" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.PersonToContact">Лице за контакт</label>
+                <input asp-for="@Model.PersonToContact" class="form-control" id="clientStoreFormControlPersonToContact">
+                <span asp-validation-for="@Model.PersonToContact" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.PhoneNumber">Телефон</label>
+                <input asp-for="@Model.PhoneNumber" class="form-control" id="clientStoreFormControlPhoneNumber">
+                <span asp-validation-for="@Model.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Email">Имейл</label>
+                <input asp-for="@Model.Email" class="form-control" id="clientStoreFormControlEmail">
+                <span asp-validation-for="@Model.Email" class="text-danger"></span>
+            </div>
+            <div class="d-grid gap-2 col-6 mx-auto fc-customButton-create">
+                <input class="btn btn-primary" type="submit" value="Редактирай" />
+            </div>
+        </form>
+    </div>
+</div>
+@section ValidationScripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

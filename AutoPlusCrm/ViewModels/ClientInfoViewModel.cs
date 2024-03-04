@@ -1,11 +1,13 @@
 ﻿using AutoPlusCrm.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace AutoPlusCrm.ViewModels
 {
     public class ClientInfoViewModel
     {
+        //Properties for the client
         public int Id { get; set; }
 
         public string Name { get; set; } = string.Empty;
@@ -39,6 +41,11 @@ namespace AutoPlusCrm.ViewModels
         public int DelayedPaymentPeriod { get; set; }
 
         public string? ClientDescription { get; set; } = string.Empty;
-        
+
+        //Properties for the client store
+        public List<ClientStore> ClientStores { get; set; } = new List<ClientStore>();
+
+        //Properties for the visits
+        public List<Visit> Visits { get; set; } = new List<Visit>();
     }
 }

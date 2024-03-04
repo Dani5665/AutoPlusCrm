@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <form asp-controller="Customer" asp-action="Add" method="post">
+        <form asp-controller="Customer" asp-action="Edit" method="post">
             <div class="form-group">
                 <label asp-for="@Model.Name">Клиент</label>
                 <input asp-for="@Model.Name" class="form-control" id="clientFormControlName">
@@ -90,7 +90,7 @@
                 <span asp-validation-for="@Model.ClientDescription" class="text-danger"></span>
             </div>
             <div class="d-grid gap-2 col-6 mx-auto fc-customButton-create">
-                <input class="btn btn-primary" type="submit" value="Създай" />
+                <input class="btn btn-primary" type="submit" value="Редактирай" />
             </div>
         </form>
     </div>

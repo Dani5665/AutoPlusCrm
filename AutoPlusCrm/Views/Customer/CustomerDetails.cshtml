@@ -2,95 +2,135 @@
 @{
     ViewBag.Title = "Детайли на клиент";
 }
-
+<hr />
 <h2 class="text-center">Детайли за клиента</h2>
 <hr />
 
-<div class="card text-center">
-    <div class="card-header">
-        <ul class="nav nav-tabs card-header-tabs">
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Active</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
-            </li>
-        </ul>
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Обща информация</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Обекти</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Визити</button>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+        <div class="card text-center">
+            <div class="tab-content">
+                <div>Клиент</div>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th scope="row" style="width: 10rem;">Name</th>
+                            <td>@Model.Name</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">City</th>
+                            <td>@Model.City</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Address</th>
+                            <td>@Model.Address</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Bulstat</th>
+                            <td>@Model.Bulstat</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">AccountablePerson</th>
+                            <td>@Model.AccountablePerson</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">PersonToContact</th>
+                            <td>@Model.PersonToContact</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">PhoneNumber</th>
+                            <td>@Model.PhoneNumber</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Email</th>
+                            <td>@Model.Email</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">CatalogueUser</th>
+                            <td>@Model.CatalogueUser</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">CataloguePassword</th>
+                            <td>@Model.CataloguePassword</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">SkypeUser</th>
+                            <td>@Model.SkypeUser</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">WebsiteUrl</th>
+                            <td><a href="https://@Model.WebsiteUrl" target="_blank">@Model.WebsiteUrl</a></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">MainDiscount</th>
+                            <td>@Model.MainDiscount %</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">CreditLimit</th>
+                            <td>@Model.CreditLimit лв</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">DelayedPaymentPeriod</th>
+                            <td>@Model.DelayedPaymentPeriod дни</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">ClientDescription</th>
+                            <td>@Model.ClientDescription</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a class="d-grid gap-2 col-6 mx-auto fc-customButton-create" asp-controller="Customer" asp-action="Edit" asp-route-id="@Model.Id">
+                    <div class="btn btn-primary">Редактирай<i value="Редактирай"></i></div>
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="card-body">
-        <table class="table table-bordered" >
-            <tbody>
-                <tr>
-                    <th scope="row">Name</th>
-                    <td>@Model.Name</td>
-                </tr>
-                <tr>
-                    <th scope="row">City</th>
-                    <td>@Model.City</td>
-                </tr>
-                <tr>
-                    <th scope="row">Address</th>
-                    <td>@Model.Address</td>
-                </tr>
-                <tr>
-                    <th scope="row">Bulstat</th>
-                    <td>@Model.Bulstat</td>
-                </tr>
-                <tr>
-                    <th scope="row">AccountablePerson</th>
-                    <td>@Model.AccountablePerson</td>
-                </tr>
-                <tr>
-                    <th scope="row">PersonToContact</th>
-                    <td>@Model.PersonToContact</td>
-                </tr>
-                <tr>
-                    <th scope="row">PhoneNumber</th>
-                    <td>@Model.PhoneNumber</td>
-                </tr>
-                <tr>
-                    <th scope="row">Email</th>
-                    <td>@Model.Email</td>
-                </tr>
-                <tr>
-                    <th scope="row">CatalogueUser</th>
-                    <td>@Model.CatalogueUser</td>
-                </tr>
-                <tr>
-                    <th scope="row">CataloguePassword</th>
-                    <td>@Model.CataloguePassword</td>
-                </tr>
-                <tr>
-                    <th scope="row">SkypeUser</th>
-                    <td>@Model.SkypeUser</td>
-                </tr>
-                <tr>
-                    <th scope="row">WebsiteUrl</th>
-                    <td>@Model.WebsiteUrl</td>
-                </tr>
-                <tr>
-                    <th scope="row">MainDiscount</th>
-                    <td>@Model.MainDiscount</td>
-                </tr>
-                <tr>
-                    <th scope="row">CreditLimit</th>
-                    <td>@Model.CreditLimit</td>
-                </tr>
-                <tr>
-                    <th scope="row">DelayedPaymentPeriod</th>
-                    <td>@Model.DelayedPaymentPeriod</td>
-                </tr>
-                <tr>
-                    <th scope="row">ClientDescription</th>
-                    <td>@Model.ClientDescription</td>
-                </tr>
-            </tbody>
-        </table>
-        <a class="d-grid gap-2 col-6 mx-auto fc-customButton-create" asp-controller="Customer" asp-action="Edit" asp-route-id="@Model.Id">
-            <div class="btn btn-primary">Редактирай<i value="Редактирай"></i></div>
+    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+        <br />
+        <a class="d-grid gap-2 col-6 mx-auto fc-customButton-create" asp-controller="Customer" asp-action="AddCustomerStore" asp-route-id=@Model.Id>
+            <div class="btn btn-primary">Добави нов обект<i value="Добави нов обект"></i></div>
         </a>
+        <br />
+        @foreach (var store in Model.ClientStores)
+        {
+            <div class="card" style="width: 25rem;">
+                <div class="card-header text-center">
+                    @store.Name - @Model.Id
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title text-center">@store.Address</h5>
+                    <p class="card-text">Брой работни места - @store.NumberOfWorkers</p>
+                    <p class="card-text">Брой монтьори - @store.NumberOfMechanics</p>
+                    <p class="card-text">Брой превозни средства - @store.NumberOfVehicles</p>
+                    <p class="card-text">Лице за контакт - @store.PersonToContact</p>
+                    <p class="card-text">Телефон - @store.PhoneNumber</p>
+                    <p class="card-text">Имейл - @store.Email</p>
+                    <a class="btn btn-primary" asp-controller="Customer" asp-action="EditCustomerStore" asp-route-id="@store.Id">Редактирай</a>
+                    <a class="btn btn-danger" asp-controller="Customer" asp-action="" asp-route-id="@store.Id">Изтрий</a>
+                </div>
+            </div>
+        }
+    </div>
+    <br />
+    <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+        <br />
+        <a class="d-grid gap-2 col-6 mx-auto fc-customButton-create" asp-controller="Customer" asp-action="" asp-route-id=@Model.Id>
+            <div class="btn btn-primary">Добави ново посещение<i value="Добави ново посещение"></i></div>
+        </a>
+        <br />
     </div>
 </div>
+
