@@ -22,6 +22,77 @@ namespace AutoPlusCrm.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserFullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("UserStore")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
             modelBuilder.Entity("AutoPlusCrm.Data.Models.Client", b =>
                 {
                     b.Property<int>("Id")
@@ -97,6 +168,9 @@ namespace AutoPlusCrm.Data.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasComment("Client phone number");
 
+                    b.Property<int>("RetailerStoresId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SkypeUser")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
@@ -108,6 +182,8 @@ namespace AutoPlusCrm.Data.Migrations
                         .HasComment("Website url");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RetailerStoresId");
 
                     b.ToTable("Clients");
                 });
@@ -135,8 +211,9 @@ namespace AutoPlusCrm.Data.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasComment("Username for AP catalogue");
 
-                    b.Property<int?>("ClientId")
-                        .HasColumnType("int");
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int")
+                        .HasComment("Id of the client");
 
                     b.Property<string>("Email")
                         .HasMaxLength(50)
@@ -295,6 +372,24 @@ namespace AutoPlusCrm.Data.Migrations
                     b.ToTable("MainDiscounts");
                 });
 
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.RetailerStores", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RetailerStores");
+                });
+
             modelBuilder.Entity("AutoPlusCrm.Data.Models.Visit", b =>
                 {
                     b.Property<int>("Id")
@@ -303,6 +398,10 @@ namespace AutoPlusCrm.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)")
+                        .HasComment("The city of the visited location");
+
                     b.Property<int>("ClientId")
                         .HasColumnType("int")
                         .HasComment("Id of the client");
@@ -310,42 +409,56 @@ namespace AutoPlusCrm.Data.Migrations
                     b.Property<int?>("ClientStoreId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ClientTypeId")
+                        .HasColumnType("int")
+                        .HasComment("Client type id");
+
                     b.Property<string>("CustomerComments")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
                         .HasComment("Any information that came from the client. It can be about our products, competitors, his impressions...");
 
                     b.Property<DateTime>("DateOfVisit")
                         .HasColumnType("datetime2")
                         .HasComment("The date when the visit happened");
 
-                    b.Property<string>("TakenActions")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
-                        .HasComment("Actions taken from the visitor so that the client starts using our services and products ");
+                    b.Property<string>("Region")
+                        .HasColumnType("nvarchar(max)")
+                        .HasComment("The region of the visited location");
 
-                    b.Property<string>("VisitCreator")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasComment("The name of the user that created the task");
-
-                    b.Property<int>("VisitGradelId")
+                    b.Property<int>("RetailerStoreId")
                         .HasColumnType("int");
 
-                    b.Property<string>("VisitPurpose")
+                    b.Property<int?>("RetailerStoresId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TakenActions")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
+                        .HasComment("Actions taken from the visitor so that the client starts using our services and products ");
+
+                    b.Property<string>("VisitCreatorId")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("VisitPurpose")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
                         .HasComment("Purpose of the visit");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClientId");
+
                     b.HasIndex("ClientStoreId");
 
-                    b.HasIndex("VisitGradelId");
+                    b.HasIndex("ClientTypeId");
+
+                    b.HasIndex("RetailerStoreId");
+
+                    b.HasIndex("RetailerStoresId");
+
+                    b.HasIndex("VisitCreatorId");
 
                     b.ToTable("Visits");
                 });
@@ -364,7 +477,13 @@ namespace AutoPlusCrm.Data.Migrations
                         .HasColumnType("nvarchar(10)")
                         .HasComment("A grade of the visit (Positive/Neutral/Negative)");
 
+                    b.Property<int>("VisitClassId")
+                        .HasColumnType("int")
+                        .HasComment("Id of the visit");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("VisitClassId");
 
                     b.ToTable("VisitGrades");
                 });
@@ -419,71 +538,6 @@ namespace AutoPlusCrm.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -571,11 +625,26 @@ namespace AutoPlusCrm.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.Client", b =>
+                {
+                    b.HasOne("AutoPlusCrm.Data.Models.RetailerStores", "RetailerStores")
+                        .WithMany("Clients")
+                        .HasForeignKey("RetailerStoresId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RetailerStores");
+                });
+
             modelBuilder.Entity("AutoPlusCrm.Data.Models.ClientStore", b =>
                 {
-                    b.HasOne("AutoPlusCrm.Data.Models.Client", null)
+                    b.HasOne("AutoPlusCrm.Data.Models.Client", "Client")
                         .WithMany("ClientStore")
-                        .HasForeignKey("ClientId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
                 });
 
             modelBuilder.Entity("AutoPlusCrm.Data.Models.CreditLimit", b =>
@@ -602,17 +671,54 @@ namespace AutoPlusCrm.Data.Migrations
 
             modelBuilder.Entity("AutoPlusCrm.Data.Models.Visit", b =>
                 {
+                    b.HasOne("AutoPlusCrm.Data.Models.Client", "Client")
+                        .WithMany("Visits")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AutoPlusCrm.Data.Models.ClientStore", null)
                         .WithMany("Visits")
                         .HasForeignKey("ClientStoreId");
 
-                    b.HasOne("AutoPlusCrm.Data.Models.VisitGrade", "VisitGrade")
+                    b.HasOne("AutoPlusCrm.Data.Models.ClientType", "ClientType")
                         .WithMany()
-                        .HasForeignKey("VisitGradelId")
+                        .HasForeignKey("ClientTypeId");
+
+                    b.HasOne("AutoPlusCrm.Data.Models.RetailerStores", "RetailerStore")
+                        .WithMany()
+                        .HasForeignKey("RetailerStoreId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AutoPlusCrm.Data.Models.RetailerStores", null)
+                        .WithMany("Visits")
+                        .HasForeignKey("RetailerStoresId");
+
+                    b.HasOne("AutoPlusCrm.Data.Models.ApplicationUser", "VisitCreator")
+                        .WithMany()
+                        .HasForeignKey("VisitCreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("VisitGrade");
+                    b.Navigation("Client");
+
+                    b.Navigation("ClientType");
+
+                    b.Navigation("RetailerStore");
+
+                    b.Navigation("VisitCreator");
+                });
+
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.VisitGrade", b =>
+                {
+                    b.HasOne("AutoPlusCrm.Data.Models.Visit", "Visit")
+                        .WithMany()
+                        .HasForeignKey("VisitClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Visit");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -626,7 +732,7 @@ namespace AutoPlusCrm.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("AutoPlusCrm.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -635,7 +741,7 @@ namespace AutoPlusCrm.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("AutoPlusCrm.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -650,7 +756,7 @@ namespace AutoPlusCrm.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("AutoPlusCrm.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -659,7 +765,7 @@ namespace AutoPlusCrm.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("AutoPlusCrm.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -673,10 +779,19 @@ namespace AutoPlusCrm.Data.Migrations
                     b.Navigation("CreditLimits");
 
                     b.Navigation("MainDiscounts");
+
+                    b.Navigation("Visits");
                 });
 
             modelBuilder.Entity("AutoPlusCrm.Data.Models.ClientStore", b =>
                 {
+                    b.Navigation("Visits");
+                });
+
+            modelBuilder.Entity("AutoPlusCrm.Data.Models.RetailerStores", b =>
+                {
+                    b.Navigation("Clients");
+
                     b.Navigation("Visits");
                 });
 #pragma warning restore 612, 618

@@ -1,0 +1,67 @@
+﻿@model EditUserViewModel
+@{
+	ViewBag.Title = "Създаване на потребител";
+}
+<br />
+<h1 class="text-center">Създай потребител</h1>
+<hr />
+<div class="card">
+	<div class="card-body">
+		<form asp-controller="AdminPanel" asp-action="AddUser" method="post">
+			<div class="row mb-3">
+				<div class="col-sm-3">
+					<h6 class="mb-0">Имена</h6>
+				</div>
+				<div class="col-sm-9 text-secondary">
+					<input asp-for="@Model.UserFullName" type="text" class="form-control" id="userFormControlFullName">
+					<span asp-validation-for="@Model.UserFullName" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3">
+					<h6 class="mb-0">Имейл</h6>
+				</div>
+				<div class="col-sm-9 text-secondary">
+					<input asp-for="@Model.UserEmail" type="text" class="form-control" id="userFormControlEmail">
+					<span asp-validation-for="@Model.UserEmail" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3">
+					<h6 class="mb-0">Магазин</h6>
+				</div>
+				<div class="col-sm-9 text-secondary">
+					@Html.DropDownList("selectedStore", (SelectList)ViewBag.RetailerStores, "Select Store", new { @class = "form-control" })
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3">
+					<h6 class="mb-0">Тип потребител</h6>
+				</div>
+				<div class="col-sm-9 text-secondary">
+					@Html.DropDownList("selectedRole", (SelectList)ViewBag.UserRoles, "Select Role", new { @class = "form-control" })
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3">
+					<h6 class="mb-0">Парола</h6>
+				</div>
+				<div class="col-sm-9 text-secondary">
+					<input asp-for="@Model.UserPassword" type="text" class="form-control" id="userFormControlUserPassword">
+					<span asp-validation-for="@Model.UserPassword" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3"></div>
+				<div class="col-sm-9 text-secondary">
+					<input type="submit" class="btn btn-primary px-4" value="Save Changes">
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+@section ValidationScripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

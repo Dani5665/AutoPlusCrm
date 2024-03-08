@@ -80,6 +80,11 @@ namespace AutoPlusCrm.Data.Models
         [Comment("Short description about the client")]
         public string? ClientDescription { get; set; } = string.Empty;
 
+        public IList<Visit> Visits { get; set; } = new List<Visit>();
 
+        [ForeignKey(nameof(RetailerStores))]
+        public int RetailerStoresId { get; set; }
+
+        public RetailerStores RetailerStores { get; set; } = null!;
     }
 }

@@ -124,13 +124,37 @@
             </div>
         }
     </div>
-    <br />
     <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
         <br />
-        <a class="d-grid gap-2 col-6 mx-auto fc-customButton-create" asp-controller="Customer" asp-action="" asp-route-id=@Model.Id>
+        <a class="d-grid gap-2 col-6 mx-auto fc-customButton-create" asp-controller="Customer" asp-action="AddVisit" asp-route-id=@Model.Id>
             <div class="btn btn-primary">Добави ново посещение<i value="Добави ново посещение"></i></div>
         </a>
         <br />
+        @foreach (var visit in Model.Visits)
+        {
+            <div class="mx-auto card text-center" style="width:1000px">
+                <div class="card-header">
+                    @visit.Client.Name
+                </div>
+                <div class="pt-3 bg-light">
+                    <h6><i class="far fa-clock"></i> @visit.DateOfVisit - @visit.VisitCreator.UserFullName</h6>
+                    <hr />
+                </div>
+                <div class="card-body bg-light">
+                    <h5 class="card-title">Цели на посещението</h5>
+                    <p class="card-text">@visit.VisitPurpose</p>
+                    <hr />
+                    <h5 class="card-title">Коментари, впечатления на клиента, действия на конкурентите</h5>
+                    <p class="card-text">@visit.CustomerComments</p>
+                    <hr />
+                    <h5 class="card-title">Извършени действия/противодействия от вас</h5>
+                    <p class="card-text">@visit.TakenActions</p>
+                    <hr />
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+            <br />
+        }
     </div>
 </div>
 

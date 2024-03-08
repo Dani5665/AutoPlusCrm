@@ -58,12 +58,44 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/Calendar/Calendar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FsZW5kYXJcQ2FsZW5kYXIuY3NodG1s
+[C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/AdminPanel/AddUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5QYW5lbFxBZGRVc2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/Home/Customers.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDdXN0b21lcnMuY3NodG1s
+[C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/AdminPanel/EditUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5QYW5lbFxFZGl0VXNlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/AdminPanel/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5QYW5lbFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/Customer/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcQWRkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/Customer/AddCustomerStore.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcQWRkQ3VzdG9tZXJTdG9yZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/Customer/AddVisit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcQWRkVmlzaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/Customer/CustomerDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcQ3VzdG9tZXJEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/Customer/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/Customer/EditCustomerStore.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcRWRpdEN1c3RvbWVyU3RvcmUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/Customer/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/Home/Index.cshtml]
@@ -72,10 +104,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/Home/Visits.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxWaXNpdHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/Shared/Error.cshtml]
@@ -100,6 +128,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/Task/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFza1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/Visit/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmlzaXRcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/C\#/AutoPlusCrm/AutoPlusCrm/Views/_ViewImports.cshtml]

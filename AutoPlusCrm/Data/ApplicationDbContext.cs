@@ -1,16 +1,25 @@
 ﻿using AutoPlusCrm.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using System.Reflection.Metadata;
 
 namespace AutoPlusCrm.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Visit>()
+            .HasOne(v => v.RetailerStore)
+            .WithMany()
+            .HasForeignKey(v => v.RetailerStoreId)
+            .OnDelete(DeleteBehavior.Restrict);
         }
 
         public DbSet<Client> Clients { get; set; }
@@ -21,6 +30,6 @@ namespace AutoPlusCrm.Data
         public DbSet<Models.FutureTask> Tasks { get; set; }
         public DbSet<VisitGrade> VisitGrades { get; set; }
         public DbSet<Visit> Visits { get; set; }
-
-    }
+		public DbSet<RetailerStores> RetailerStores { get; set; }
+	}
 }

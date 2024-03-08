@@ -41,5 +41,7 @@ namespace AutoPlusCrm.ViewModels
         public int? DelayedPaymentPeriod { get; set; } = 0;
 
         public string? ClientDescription { get; set; } = string.Empty;
+
+        public int? RetailerStoreId { get; set; }
     }
 }

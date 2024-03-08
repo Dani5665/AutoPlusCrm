@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoPlusCrm.Data.Models
 {
@@ -52,5 +53,11 @@ namespace AutoPlusCrm.Data.Models
 
         [Comment("List of all the visits made to the store")]
         public IList<Visit> Visits { get; set; } = null!;
+
+        [Comment("Id of the client")]
+        [ForeignKey(nameof(Client))]
+        public int ClientId { get; set; }
+
+        public Client Client { get; set; } = null!;
     }
 }

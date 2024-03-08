@@ -1,0 +1,51 @@
+﻿@model IEnumerable<UsersTableDetailsViewModel>
+@{
+    ViewData["Title"] = "Админ панел";
+}
+<br />
+<h1 class="text-center">Админ панел</h1>
+<hr />
+<br />
+<a class="d-grid gap-2 col-6 mx-auto fc-customButton-create" asp-controller="AdminPanel" asp-action="AddUser">
+    <div class="btn btn-primary">Създай клиент<i value="Създай потребител"></i></div>
+</a>
+<hr />
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        Списък с клиенти
+    </div>
+    <div class="card-body">
+        <table id="datatablesSimple">
+            <thead>
+                <tr>
+                    <th>Име</th>
+                    <th>Имейл</th>
+                    <th>Магазин</th>
+                    <th>-</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Име</th>
+                    <th>Имейл</th>
+                    <th>Магазин</th>
+                    <th>-</th>
+                </tr>
+            </tfoot>
+            <tbody>
+                @foreach (var u in Model)
+                {
+                    <tr>
+                        <td>@u.UserFullName</td>
+                        <td>@u.UserEmail</td>
+                        <td>@u.UserStore</td>
+                        <td><a asp-controller="AdminPanel" asp-action="CustomerDetails" asp-route-id="@u.Id"> Виж</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />

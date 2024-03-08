@@ -1,0 +1,102 @@
+﻿@model AddVisitViewModel
+@{
+	if (ViewBag.Title != null)
+	{
+		ViewBag.Title = "Създаване на визита";
+	}
+}
+<br />
+<h1 class="text-center">Добави визита</h1>
+<hr />
+<div class="card">
+	<div class="card-body">
+		<form asp-controller="Customer" asp-action="AddVisit" method="post">
+			<div class="row mb-3">
+				<div class="col-sm-3">
+					<h6 class="mb-0">Цели на посещението</h6>
+				</div>
+				<div class="col-sm-9 text-secondary">
+					<textarea asp-for="@Model.VisitPurpose" type="text" class="form-control" id="userFormControlVisitPurpose" rows="3"></textarea>
+					<span asp-validation-for="@Model.VisitPurpose" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3">
+					<h6 class="mb-0">Коментари, впечатления на клиента, действия на конкурентите</h6>
+				</div>
+				<div class="col-sm-9 text-secondary">
+					<textarea asp-for="@Model.CustomerComments" type="text" class="form-control" id="userFormControlCustomerComments" rows="3"></textarea>
+					<span asp-validation-for="@Model.CustomerComments" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3">
+					<h6 class="mb-0">Извършени действия/противодействия, причини за ръст/спад на оборота по ТМ, предложения и т.н.</h6>
+				</div>
+				<div class="col-sm-9 text-secondary">
+					<textarea asp-for="@Model.TakenActions" type="text" class="form-control" id="userFormControlTakenActions" rows="3"></textarea>
+					<span asp-validation-for="@Model.TakenActions" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3">
+					<h6 class="mb-0">Дата (формат - 2024-5-5 10:00)</h6>
+				</div>
+				<div class="col-sm-9 text-secondary">
+					<input asp-for="@Model.DateOfVisit" type="text" class="form-control" id="userFormControlDateOfVisit">
+					<span asp-validation-for="@Model.DateOfVisit" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3">
+					<h6 class="mb-0">Град</h6>
+				</div>
+				<div class="col-sm-9 text-secondary">
+					<input asp-for="@Model.City" type="text" class="form-control" id="userFormControlCity">
+					<span asp-validation-for="@Model.City" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3">
+					<h6 class="mb-0">Регион</h6>
+				</div>
+				<div class="col-sm-9 text-secondary">
+					<input asp-for="@Model.Region" type="text" class="form-control" id="userFormControlRegion">
+					<span asp-validation-for="@Model.Region" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3">
+					<h6 class="mb-0">Вид на обекта</h6>
+				</div>
+				<div class="col-sm-9 text-secondary">
+					@if (ViewBag.ClientTypes != null)
+					{
+						@Html.DropDownList("selectedType", (SelectList)ViewBag.ClientTypes, "Select Type", new { @class = "form-control" })
+					}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3"></div>
+				<div class="col-sm-9 text-secondary">
+					<input type="submit" class="btn btn-primary px-4" value="Save Changes">
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+@section ValidationScripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
+
+@* 
+VisitPurpose - text field
+CustomerComments - text field
+TakenActions - text field
+DateOfVisit - date selector
+City
+Region
+ClientTypeId - select list item
+*@
