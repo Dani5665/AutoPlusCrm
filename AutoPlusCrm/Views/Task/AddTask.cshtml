@@ -1,0 +1,83 @@
+﻿@model AddFutureTaskViewModel
+@{
+	ViewBag.Title = "Създаване на задача";
+}
+<br />
+<h1 class="text-center">Създай задача</h1>
+<hr />
+<div class="card">
+	<div class="card-body">
+		<form asp-controller="Task" asp-action="AddTask" method="post">
+			<div class="row mb-3">
+				<div class="col-sm-3">
+					<h6 class="mb-0">Описание на задачата</h6>
+				</div>
+				<div class="col-sm-9 text-secondary">
+					<input asp-for="@Model.TaskDescription" type="text" class="form-control" id="userFormControlTaskDescription">
+					<span asp-validation-for="@Model.TaskDescription" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3">
+					<h6 class="mb-0">Дата на изпълнение</h6>
+				</div>
+				<div class="col-sm-9 text-secondary">
+					<input asp-for="@Model.DateAndTime" type="text" class="form-control" id="userFormControlDateOfTask">
+					<span asp-validation-for="@Model.DateAndTime" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3">
+					<h6 class="mb-0">Име на клиент</h6>
+				</div>
+				<div class ="col-sm-9 text-secondary">
+					<select id="selectClients" name="selectedClient" class="form-control">
+						<option value="">Select Client</option>
+						@foreach (var client in ViewBag.Clients)
+						{
+							<option value="@client.Value">@client.Text</option>
+						}
+					</select>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3">
+					<h6 class="mb-0">Град</h6>
+				</div>
+				<div class="col-sm-9 text-secondary">
+					<input asp-for="@Model.City" type="text" class="form-control" id="userFormControlCity">
+					<span asp-validation-for="@Model.City" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-sm-3">
+					<h6 class="mb-0">Регион</h6>
+				</div>
+				<div class="col-sm-9 text-secondary">
+					<input asp-for="@Model.Region" type="text" class="form-control" id="userFormControlRegion">
+					<span asp-validation-for="@Model.Region" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3"></div>
+				<div class="col-sm-9 text-secondary">
+					<input type="submit" class="btn btn-primary px-4" value="Save Changes">
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+@section ValidationScripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
+@section scripts {
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			$('#selectClients').select2();
+		});
+	</script>
+}
+

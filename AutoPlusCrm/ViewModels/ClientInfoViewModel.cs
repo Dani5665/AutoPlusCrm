@@ -1,7 +1,4 @@
 ﻿using AutoPlusCrm.Data.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 
 namespace AutoPlusCrm.ViewModels
 {
@@ -47,5 +44,11 @@ namespace AutoPlusCrm.ViewModels
 
         //Properties for the visits
         public List<Visit> Visits { get; set; } = new List<Visit>();
+
+        //Properties for the RetailerStore
+
+        public int RetailerStoreId { get; set; }
+
+        public RetailerStores RetailerStore { get; set; } = null!;
     }
 }

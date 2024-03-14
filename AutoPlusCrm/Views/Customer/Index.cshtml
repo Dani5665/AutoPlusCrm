@@ -43,6 +43,7 @@
                 <tr>
                     <th>Клиент</th>
                     <th>Град</th>
+                    <th>Доставчик</th>
                     <th>-</th>
                     <th>-</th>
                 </tr>
@@ -51,6 +52,7 @@
                 <tr>
                     <th>Клиент</th>
                     <th>Град</th>
+                    <th>Доставчик</th>
                     <th>-</th>
                     <th>-</th>
                 </tr>
@@ -61,6 +63,7 @@
                     <tr>
                         <td>@c.Name</td>
                         <td>@c.City</td>
+                        <td>@c.RetailerStore.Name</td>
                         <td><a asp-controller="Customer" asp-action="CustomerDetails" asp-route-id="@c.Id"> Виж</a></td>
                         <td>Изтрий</td>
                     </tr>

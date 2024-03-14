@@ -7,7 +7,7 @@
 <hr />
 <br />
 <a class="d-grid gap-2 col-6 mx-auto fc-customButton-create" asp-controller="AdminPanel" asp-action="AddUser">
-    <div class="btn btn-primary">Създай клиент<i value="Създай потребител"></i></div>
+    <div class="btn btn-primary">Създай потребител<i value="Създай потребител"></i></div>
 </a>
 <hr />
 
@@ -24,6 +24,7 @@
                     <th>Имейл</th>
                     <th>Магазин</th>
                     <th>-</th>
+                    <th>-</th>
                 </tr>
             </thead>
             <tfoot>
@@ -32,16 +33,18 @@
                     <th>Имейл</th>
                     <th>Магазин</th>
                     <th>-</th>
+                    <th>-</th>
                 </tr>
             </tfoot>
             <tbody>
                 @foreach (var u in Model)
                 {
                     <tr>
-                        <td>@u.UserFullName</td>
                         <td>@u.UserEmail</td>
+                        <td>@u.UserFullName</td>
                         <td>@u.UserStore</td>
-                        <td><a asp-controller="AdminPanel" asp-action="CustomerDetails" asp-route-id="@u.Id"> Виж</a></td>
+                        <td><a asp-controller="AdminPanel" asp-action="UserDetails" asp-route-id="@u.Id"> Виж</a></td>
+                        <td><a asp-controller="AdminPanel" asp-action="EditUser" asp-route-id="@u.Id"> Редактирай</a></td>
                     </tr>
                 }
             </tbody>

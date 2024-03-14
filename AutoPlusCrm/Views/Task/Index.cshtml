@@ -1,7 +1,56 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IList<FutureTaskViewModel>
 @{
+    ViewData["Title"] = "Tasks";
 }
 
-<h1> Tasks index page</h1>
+<hr />
+<h2 class="text-center">Задачи</h2>
+<hr />
+<a class="d-grid gap-2 col-6 mx-auto fc-customButton-create" asp-controller="Task" asp-action="AddTask">
+    <div class="btn btn-primary">Добави нова задача<i value="Добави нова задача"></i></div>
+</a>
+<br />
+
+<section class="vh-100 gradient-custom-2">
+    @foreach (var task in Model)
+    {
+        <div class="mx-auto card text-center" style="width:1000px">
+            <div class="card-header">
+                @task.Client.Name
+            </div>
+            <div class="pt-3 bg-light">
+                <h6><i class="far fa-clock"></i> @task.DateAndTime - @task.ApplicationUser.UserFullName</h6>
+                <hr />
+            </div>
+            <div class="pt-3 bg-light" style="padding-top: 0rem !important">
+                <h6> Град - @task.City || Регион - @task.Region</h6>
+                <hr />
+            </div>
+            <div class="card-body bg-light" style="padding-top: 0rem !important">
+                <h5 class="card-title">Описание</h5>
+                <p class="card-text">@task.TaskDescription</p>
+                <hr />
+                @if (task.Iscompleted == false)
+                {
+                    <form id="completeTaskForm" method="post" action="@Url.Action("CompleteTask", "Task")">
+                        <input type="hidden" name="taskId" value="@task.Id" />
+                        <button id="completeTaskButton" class="btn btn-outline-secondary" type="button">Завърши задача</button>
+                    </form>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-success" disabled>Задачата е завършена</button>
+                }
+            </div>
+        </div>
+        <br />
+    }
+</section>
+
+@section Scripts {
+    <script>
+        document.getElementById("completeTaskButton").addEventListener("click", function () {
+            document.getElementById("completeTaskForm").submit();
+        });
+    </script>
+}

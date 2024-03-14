@@ -20,75 +20,79 @@
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
         <div class="card text-center">
-            <div class="tab-content">
+            @* <div class="tab-content">
                 <div>Клиент</div>
-            </div>
+            </div> *@
             <div class="card-body">
                 <table class="table table-bordered">
                     <tbody>
                         <tr>
-                            <th scope="row" style="width: 10rem;">Name</th>
+                            <th scope="row" style="width: 10rem;">Име</th>
                             <td>@Model.Name</td>
                         </tr>
                         <tr>
-                            <th scope="row">City</th>
+                            <th scope="row">Град</th>
                             <td>@Model.City</td>
                         </tr>
                         <tr>
-                            <th scope="row">Address</th>
+                            <th scope="row">Адрес</th>
                             <td>@Model.Address</td>
                         </tr>
                         <tr>
-                            <th scope="row">Bulstat</th>
+                            <th scope="row">Булстат</th>
                             <td>@Model.Bulstat</td>
                         </tr>
                         <tr>
-                            <th scope="row">AccountablePerson</th>
+                            <th scope="row">МОЛ</th>
                             <td>@Model.AccountablePerson</td>
                         </tr>
                         <tr>
-                            <th scope="row">PersonToContact</th>
+                            <th scope="row">Лице за контакт</th>
                             <td>@Model.PersonToContact</td>
                         </tr>
                         <tr>
-                            <th scope="row">PhoneNumber</th>
+                            <th scope="row">Телефон</th>
                             <td>@Model.PhoneNumber</td>
                         </tr>
                         <tr>
-                            <th scope="row">Email</th>
+                            <th scope="row">Ймейл</th>
                             <td>@Model.Email</td>
                         </tr>
                         <tr>
-                            <th scope="row">CatalogueUser</th>
+                            <th scope="row">Потребител каталог</th>
                             <td>@Model.CatalogueUser</td>
                         </tr>
                         <tr>
-                            <th scope="row">CataloguePassword</th>
+                            <th scope="row">Парола каталог</th>
                             <td>@Model.CataloguePassword</td>
                         </tr>
                         <tr>
-                            <th scope="row">SkypeUser</th>
+                            <th scope="row">Скайп</th>
                             <td>@Model.SkypeUser</td>
                         </tr>
                         <tr>
-                            <th scope="row">WebsiteUrl</th>
+                            <th scope="row">Уебсайт</th>
                             <td><a href="https://@Model.WebsiteUrl" target="_blank">@Model.WebsiteUrl</a></td>
                         </tr>
                         <tr>
-                            <th scope="row">MainDiscount</th>
+                            <th scope="row">Основна отстъпка</th>
                             <td>@Model.MainDiscount %</td>
                         </tr>
                         <tr>
-                            <th scope="row">CreditLimit</th>
+                            <th scope="row">Кредитен лимит</th>
                             <td>@Model.CreditLimit лв</td>
                         </tr>
                         <tr>
-                            <th scope="row">DelayedPaymentPeriod</th>
+                            <th scope="row">Отложено плащане</th>
                             <td>@Model.DelayedPaymentPeriod дни</td>
                         </tr>
                         <tr>
-                            <th scope="row">ClientDescription</th>
+                            <th scope="row">Описание на клиента</th>
                             <td>@Model.ClientDescription</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Доставчик</th>
+                            <td>@Model.RetailerStore.Name</td>
                         </tr>
                     </tbody>
                 </table>
@@ -126,7 +130,7 @@
     </div>
     <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
         <br />
-        <a class="d-grid gap-2 col-6 mx-auto fc-customButton-create" asp-controller="Customer" asp-action="AddVisit" asp-route-id=@Model.Id>
+        <a class="d-grid gap-2 col-6 mx-auto fc-customButton-create" asp-controller="Customer" asp-action="AddVisit" asp-route-id="@Model.Id">
             <div class="btn btn-primary">Добави ново посещение<i value="Добави ново посещение"></i></div>
         </a>
         <br />
@@ -137,7 +141,7 @@
                     @visit.Client.Name
                 </div>
                 <div class="pt-3 bg-light">
-                    <h6><i class="far fa-clock"></i> @visit.DateOfVisit - @visit.VisitCreator.UserFullName</h6>
+                    <h6><i class="far fa-clock"></i> @visit.DateOfVisit <i class="bi bi-person-circle"></i> @visit.VisitCreator.UserFullName</h6>
                     <hr />
                 </div>
                 <div class="card-body bg-light">

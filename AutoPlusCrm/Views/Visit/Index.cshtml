@@ -1,4 +1,4 @@
-﻿@model VisitTableViewModel
+﻿@model IList<VisitTableViewModel>
 @{
     ViewData["Title"] = "Visits";
 
@@ -37,7 +37,7 @@
                     <th>Населено място</th>
                     <th>Район</th>
                     <th>Вид клиент</th>
-                    <th>Създал</th>
+                    <th>Доставчик</th>
                     <th>Дата</th>
                 </tr>
             </thead>
@@ -52,15 +52,21 @@
                 </tr>
             </tfoot>
             <tbody>
-                <tr>
-                    <td>Tiger Nixon</td>
-                    <td>System Architect</td>
-                    <td>Edinburgh</td>
-                    <td>61</td>
-                    <td>2011/04/25</td>
-                    <td>$320,800</td>
-                </tr>
-
+                @foreach (var visit in Model)
+                {
+                    <tr>
+                        <td>
+                            <a asp-controller="Customer" asp-action="CustomerDetails" asp-route-id="@visit.Client.Id">
+                                @visit.Client.Name
+                            </a>
+                        </td>
+                        <td>@visit.City</td>
+                        <td>@visit.Region</td>
+                        <td>@visit.ClientType.Type</td>
+                        <td>@visit.RetailerStore.Name</td>
+                        <td>@visit.DateOfVisit</td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

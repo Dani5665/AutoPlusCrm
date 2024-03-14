@@ -4,6 +4,7 @@ using AutoPlusCrm.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoPlusCrm.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240309111332_UpdatingRelationsInApplicationUserToRetailerStores")]
+    partial class UpdatingRelationsInApplicationUserToRetailerStores
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -314,25 +317,21 @@ namespace AutoPlusCrm.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
                         .HasComment("The city in which the client store is located");
 
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
+                    b.Property<string>("ClientName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasComment("The name of the client that will be visited");
 
                     b.Property<DateTime>("DateAndTime")
                         .HasColumnType("datetime2")
                         .HasComment("The date when the visit will be made");
-
-                    b.Property<bool>("Iscompleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Region")
                         .IsRequired()
@@ -340,21 +339,13 @@ namespace AutoPlusCrm.Data.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasComment("The region in which the client store is located");
 
-                    b.Property<int>("RetailerStoreId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TaskDescription")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasComment("Description of the task");
+                    b.Property<string>("TaskCreator")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasComment("The name of the user that created the task");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("ClientId");
-
-                    b.HasIndex("RetailerStoreId");
 
                     b.ToTable("Tasks");
                 });
@@ -681,33 +672,6 @@ namespace AutoPlusCrm.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Client");
-                });
-
-            modelBuilder.Entity("AutoPlusCrm.Data.Models.FutureTask", b =>
-                {
-                    b.HasOne("AutoPlusCrm.Data.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AutoPlusCrm.Data.Models.Client", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AutoPlusCrm.Data.Models.RetailerStores", "RetailerStore")
-                        .WithMany()
-                        .HasForeignKey("RetailerStoreId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Client");
-
-                    b.Navigation("RetailerStore");
                 });
 
             modelBuilder.Entity("AutoPlusCrm.Data.Models.MainDiscount", b =>
