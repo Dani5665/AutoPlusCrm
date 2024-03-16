@@ -33,33 +33,6 @@ namespace AutoPlusCrm.Data
             .HasForeignKey(ft => ft.RetailerStoreId)
             .OnDelete(DeleteBehavior.Restrict);
 
-			modelBuilder.Entity<FutureTask>()
-			.Property(p => p.DateAndTime)
-			.HasConversion(
-				v => v.ToString("dd/MM/yyyy"),
-				v => DateTime.Parse(v)
-			);
-
-			modelBuilder.Entity<CreditLimit>()
-			.Property(p => p.DateAndTime)
-			.HasConversion(
-				v => v.ToString("dd/MM/yyyy"),
-				v => DateTime.Parse(v)
-			);
-
-			modelBuilder.Entity<MainDiscount>()
-			.Property(p => p.DateAndTime)
-			.HasConversion(
-				v => v.ToString("dd/MM/yyyy"),
-				v => DateTime.Parse(v)
-			);
-
-			modelBuilder.Entity<Visit>()
-			.Property(p => p.DateOfVisit)
-			.HasConversion(
-				v => v.ToString("dd/MM/yyyy"),
-				v => DateTime.Parse(v)
-			);
 		}
 
         public DbSet<Client> Clients { get; set; }
