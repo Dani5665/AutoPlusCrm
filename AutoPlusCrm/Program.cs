@@ -12,7 +12,7 @@ namespace AutoPlusCrm
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("MyConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            var connectionString = builder.Configuration.GetConnectionString("CustomConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -31,7 +31,23 @@ namespace AutoPlusCrm
 
             var app = builder.Build();
 
-            //test
+            // Seed data
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var context = services.GetRequiredService<ApplicationDbContext>();
+                    await SeedData.InitializeUserRoles(services);
+                    await SeedData.InitializeRetailerStores(services);
+                    await SeedData.InitializeClientTypes(services);
+                    await SeedData.InitializeAdminUser(services);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("An error occurred while seeding the database: " + ex.Message);
+                }
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -57,41 +73,6 @@ namespace AutoPlusCrm
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
-            //Seeding roles if they are not created
-            using(var scope = app.Services.CreateScope())
-            {
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-                var roles = new[] { "Admin","Manager", "User" };
-
-                foreach (var role in roles)
-                {
-                    if (!await roleManager.RoleExistsAsync(role))
-                    {
-                        await roleManager.CreateAsync(new IdentityRole(role));
-                    }
-                }
-            };
-
-            //Seeding admin user if it is not created
-            using (var scope = app.Services.CreateScope())
-                {
-                    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
-                    string email = "admin@admin.com"; ;
-                    string password = "Admin@1234";
-
-                    if (await userManager.FindByNameAsync(email) == null)
-                    {
-                        var user = new ApplicationUser();
-                        user.UserName = email;
-                        user.Email = email;
-
-                        await userManager.CreateAsync(user, password);
-
-                        await userManager.AddToRoleAsync(user, "Admin");
-                    }
-                };
 
             app.Run();
         }

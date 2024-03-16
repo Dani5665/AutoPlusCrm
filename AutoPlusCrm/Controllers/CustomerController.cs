@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Drawing;
 
 namespace AutoPlusCrm.Controllers
 {
@@ -25,10 +24,13 @@ namespace AutoPlusCrm.Controllers
         {
             var customers = await data.Clients
                 .AsNoTracking()
+                .Include(c => c.RetailerStores)
                 .Select(c => new ClientTableDetailsViewModel(
                     c.Id,
                     c.Name,
-                    c.City))
+                    c.City,
+                    c.RetailerStoresId,
+                    c.RetailerStores))
                 .ToListAsync();
 
             return View(customers);
@@ -46,7 +48,7 @@ namespace AutoPlusCrm.Controllers
         public async Task<IActionResult> Add(ClientFormViewModel model)
         {
 			var currentUser = await _userManager.GetUserAsync(User);
-            var retailerStore = await data.RetailerStores.FirstOrDefaultAsync(rs => rs.Name == currentUser.UserStore);
+            var retailerStore = await data.RetailerStores.FirstOrDefaultAsync(rs => rs.Id == currentUser.UserStoreId);
 
             if (ModelState.IsValid)
             {
@@ -234,6 +236,7 @@ namespace AutoPlusCrm.Controllers
                 .Include(c => c.CreditLimits)
                 .Include(c => c.MainDiscounts)
                 .Include(c => c.ClientStore)
+                .Include(c => c.RetailerStores)
                 .Include(c => c.Visits)
                     .ThenInclude(v => v.VisitCreator)
                 .FirstOrDefaultAsync(c => c.Id == id);
@@ -268,7 +271,8 @@ namespace AutoPlusCrm.Controllers
                 DelayedPaymentPeriod = customer.DelayedPaymentPeriod ?? 0,
                 ClientDescription = customer.ClientDescription ?? "-",
                 ClientStores = stores,
-                Visits = visits
+                Visits = visits,
+                RetailerStore = customer.RetailerStores
             };
 
 
@@ -389,7 +393,10 @@ namespace AutoPlusCrm.Controllers
             PopulateClientTypesList();
 
             var user = await _userManager.GetUserAsync(User);
-            var store = await data.RetailerStores.FirstOrDefaultAsync(s => s.Name == user.UserStore);
+            var userdata = await data.Users
+                .Include(ud => ud.UserStore)
+                .FirstOrDefaultAsync(ud => ud.Id == user.Id);
+                
             var type = selectedType;
 
             if (user == null)
@@ -407,7 +414,7 @@ namespace AutoPlusCrm.Controllers
                     DateOfVisit = model.DateOfVisit,
                     VisitCreatorId = user.Id,
                     ClientId = id,
-                    RetailerStoreId = store.Id,
+                    RetailerStoreId = userdata.UserStore.Id,
                     City = model.City,
                     Region = model.Region,
                     ClientTypeId = int.Parse(type)

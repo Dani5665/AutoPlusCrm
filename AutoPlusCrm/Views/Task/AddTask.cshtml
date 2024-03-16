@@ -22,7 +22,7 @@
 					<h6 class="mb-0">Дата на изпълнение</h6>
 				</div>
 				<div class="col-sm-9 text-secondary">
-					<input asp-for="@Model.DateAndTime" type="text" class="form-control" id="userFormControlDateOfTask">
+					<input asp-for="@Model.DateAndTime" type="text" id="datepicker" name="datepicker" />
 					<span asp-validation-for="@Model.DateAndTime" class="text-danger"></span>
 				</div>
 			</div>
@@ -79,5 +79,15 @@
 			$('#selectClients').select2();
 		});
 	</script>
+	<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+	<script>
+		$(function () {
+			$("#datepicker").datepicker({
+				minDate: 0, //0 means today
+				dateFormat: "dd/mm/yy" // Set date format to YYYY-MM-DD
+			});
+		});
+	</script>
+
 }
 

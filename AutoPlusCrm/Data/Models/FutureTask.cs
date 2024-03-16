@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoPlusCrm.Data.Models
 {
@@ -9,10 +10,15 @@ namespace AutoPlusCrm.Data.Models
         [Key]
         public int Id { get; set; }
 
+        [Comment("Description of the task")]
+        [MaxLength(200)]
+        public string? TaskDescription { get; set; }
+
         [Required]
-        [StringLength(100)]
-        [Comment("The name of the client that will be visited")]
-        public string ClientName { get; set; } = string.Empty;
+        [ForeignKey(nameof(Client))]
+        public int ClientId { get; set; }
+
+        public Client Client { get; set; } = null!;
 
         [Required]
         [Comment("The date when the visit will be made")]
@@ -29,8 +35,17 @@ namespace AutoPlusCrm.Data.Models
         public string Region { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(30)]
-        [Comment("The name of the user that created the task")]
-        public string TaskCreator { get; set; } = string.Empty;
+        [ForeignKey(nameof(ApplicationUser))]
+        public string ApplicationUserId { get; set; } = string.Empty;
+
+        [Required]
+        public ApplicationUser ApplicationUser { get; set; } = null!;
+
+        public int RetailerStoreId { get; set; }
+
+        public RetailerStores RetailerStore { get; set; } = null!;
+
+        [Required]
+        public bool Iscompleted { get; set; }
     }
 }

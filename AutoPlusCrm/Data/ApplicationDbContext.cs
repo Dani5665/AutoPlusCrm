@@ -20,6 +20,18 @@ namespace AutoPlusCrm.Data
             .WithMany()
             .HasForeignKey(v => v.RetailerStoreId)
             .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ApplicationUser>()
+            .HasOne(au => au.UserStore)
+            .WithMany()
+            .HasForeignKey(au => au.UserStoreId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<FutureTask>()
+            .HasOne(ft => ft.RetailerStore)
+            .WithMany()
+            .HasForeignKey(ft => ft.RetailerStoreId)
+            .OnDelete(DeleteBehavior.Restrict);
         }
 
         public DbSet<Client> Clients { get; set; }

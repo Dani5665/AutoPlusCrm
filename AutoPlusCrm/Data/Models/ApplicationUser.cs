@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoPlusCrm.Data.Models
 {
@@ -6,6 +7,9 @@ namespace AutoPlusCrm.Data.Models
     {
         public string? UserFullName { get; set; } = string.Empty;
 
-        public string? UserStore { get; set; } = string.Empty;
+        [ForeignKey(nameof(UserStore))]
+        public int UserStoreId { get; set; }
+
+        public RetailerStores UserStore { get; set; } = null!;
     }
 }
