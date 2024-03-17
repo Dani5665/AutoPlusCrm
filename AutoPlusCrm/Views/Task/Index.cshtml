@@ -10,8 +10,23 @@
     <div class="btn btn-primary">Добави нова задача<i value="Добави нова задача"></i></div>
 </a>
 <br />
+<div style="margin:auto; width:fit-content">
+    <form asp-controller="Task" asp-action="Index">
+        <label for="retalerStores">Филтрирай по магазин</label>
+        <select id="selectRetailerStores" name="selectedStores" multiple="multiple">
+            @* <option value="">Select Retailer Store</option> *@
+            @foreach (var storeFilter in ViewBag.StoreFilters)
+            {
+                <option value="@storeFilter.Value">@storeFilter.Text</option>
+            }
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+</div>
+<hr />
 
-<section class="vh-100 gradient-custom-2">
+
+<section class="gradient-custom-2">
     @foreach (var task in Model)
     {
         <div class="mx-auto card text-center" style="width:1000px">
@@ -48,9 +63,17 @@
 </section>
 
 @section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
     <script>
         document.getElementById("completeTaskButton").addEventListener("click", function () {
             document.getElementById("completeTaskForm").submit();
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#selectRetailerStores').select2();
         });
     </script>
 }

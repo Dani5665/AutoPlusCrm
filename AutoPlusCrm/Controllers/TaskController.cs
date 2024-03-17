@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AutoPlusCrm.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Globalization;
 
 namespace AutoPlusCrm.Controllers
 {
@@ -19,31 +20,61 @@ namespace AutoPlusCrm.Controllers
 			_userManager = userManager;
 		}
 
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index(string[] selectedStores)
         {
+			await PopulateRetailerStoreFilterListAsync();
+
             if (User.IsInRole("Admin") || User.IsInRole("Manager")) 
 			{
-				var tasks = await data.Tasks
-					.AsNoTracking()
+				if (selectedStores != null && selectedStores.Length > 0)
+				{
+                    var tasks = await data.Tasks.Where(t => selectedStores.Contains(t.RetailerStore.Name))
+                    .AsNoTracking()
                     .Include(t => t.ApplicationUser)
                     .Include(t => t.Client)
-					.Include(t => t.RetailerStore)
+                    .Include(t => t.RetailerStore)
                     .Select(t => new FutureTaskViewModel(
-						t.Id,
-						t.TaskDescription,
-						t.DateAndTime,
-						t.City,
-						t.Region,
-						t.Iscompleted,
-						t.ApplicationUserId,
-						t.ApplicationUser,
-						t.ClientId,
-						t.Client,
-						t.RetailerStoreId,
-						t.RetailerStore))
+                        t.Id,
+                        t.TaskDescription,
+                        t.DateAndTime,
+                        t.City,
+                        t.Region,
+                        t.Iscompleted,
+                        t.ApplicationUserId,
+                        t.ApplicationUser,
+                        t.ClientId,
+                        t.Client,
+                        t.RetailerStoreId,
+                        t.RetailerStore))
                     .ToListAsync();
 
-				return View(tasks);
+                    return View(tasks);
+                }
+				else
+				{
+                    var tasks = await data.Tasks
+                    .AsNoTracking()
+                    .Include(t => t.ApplicationUser)
+                    .Include(t => t.Client)
+                    .Include(t => t.RetailerStore)
+                    .Select(t => new FutureTaskViewModel(
+                        t.Id,
+                        t.TaskDescription,
+                        t.DateAndTime,
+                        t.City,
+                        t.Region,
+                        t.Iscompleted,
+                        t.ApplicationUserId,
+                        t.ApplicationUser,
+                        t.ClientId,
+                        t.Client,
+                        t.RetailerStoreId,
+                        t.RetailerStore))
+                    .ToListAsync();
+
+                    return View(tasks);
+                }
+				
 			}
 			else if (User.IsInRole("User"))
 			{
@@ -82,6 +113,7 @@ namespace AutoPlusCrm.Controllers
 			await PopulateClientsListAsync();
 
 			var model = new AddFutureTaskViewModel();
+
 			return View(model);
 		}
 
@@ -102,9 +134,11 @@ namespace AutoPlusCrm.Controllers
 				return BadRequest();
 			}
 
+			var dateParsed = DateTime.Parse(model.DateAndTime);
+
 			var task = new FutureTask();
 			task.TaskDescription = model.TaskDescription;
-			task.DateAndTime = model.DateAndTime;
+			task.DateAndTime = dateParsed;
 			task.City = model.City;
 			task.Region = model.Region;
 			task.Iscompleted = false;
@@ -121,7 +155,9 @@ namespace AutoPlusCrm.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CompleteTask(int taskId)
 		{
-			var task = await data.Tasks.FirstOrDefaultAsync(t => t.Id == taskId);
+			var task = await data.Tasks
+				.AsNoTracking()
+				.FirstOrDefaultAsync(t => t.Id == taskId);
 
 			if (task == null)
 			{
@@ -141,7 +177,9 @@ namespace AutoPlusCrm.Controllers
 			var user = await _userManager.GetUserAsync(User);
 			if (user != null)
 			{
-				var clients = await data.Clients.Where(c => c.RetailerStoresId == user.UserStoreId).ToListAsync();
+				var clients = await data.Clients
+					.AsNoTracking()
+					.Where(c => c.RetailerStoresId == user.UserStoreId).ToListAsync();
 				ViewBag.Clients = new SelectList(clients, "Id", "Name");
 			}
 			else
@@ -151,5 +189,14 @@ namespace AutoPlusCrm.Controllers
 			}
 		}
 
-	}
+        public async Task PopulateRetailerStoreFilterListAsync()
+        {
+			var retailerStores = await data.RetailerStores
+				.AsNoTracking()
+				.ToListAsync();
+
+			ViewBag.StoreFilters = new SelectList(retailerStores, "Name", "Name");
+        }
+
+    }
 }

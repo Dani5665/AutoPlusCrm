@@ -187,7 +187,7 @@ namespace AutoPlusCrm.Data.Migrations
 
                     b.HasIndex("RetailerStoresId");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("AutoPlusCrm.Data.Models.ClientStore", b =>
@@ -257,7 +257,7 @@ namespace AutoPlusCrm.Data.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Stores");
+                    b.ToTable("Stores", (string)null);
                 });
 
             modelBuilder.Entity("AutoPlusCrm.Data.Models.ClientType", b =>
@@ -276,7 +276,7 @@ namespace AutoPlusCrm.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ClientTypes");
+                    b.ToTable("ClientTypes", (string)null);
                 });
 
             modelBuilder.Entity("AutoPlusCrm.Data.Models.CreditLimit", b =>
@@ -303,7 +303,7 @@ namespace AutoPlusCrm.Data.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("CreditLimits");
+                    b.ToTable("CreditLimits", (string)null);
                 });
 
             modelBuilder.Entity("AutoPlusCrm.Data.Models.FutureTask", b =>
@@ -356,7 +356,7 @@ namespace AutoPlusCrm.Data.Migrations
 
                     b.HasIndex("RetailerStoreId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", (string)null);
                 });
 
             modelBuilder.Entity("AutoPlusCrm.Data.Models.MainDiscount", b =>
@@ -383,7 +383,7 @@ namespace AutoPlusCrm.Data.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("MainDiscounts");
+                    b.ToTable("MainDiscounts", (string)null);
                 });
 
             modelBuilder.Entity("AutoPlusCrm.Data.Models.RetailerStores", b =>
@@ -401,7 +401,7 @@ namespace AutoPlusCrm.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RetailerStores");
+                    b.ToTable("RetailerStores", (string)null);
                 });
 
             modelBuilder.Entity("AutoPlusCrm.Data.Models.Visit", b =>
@@ -474,7 +474,7 @@ namespace AutoPlusCrm.Data.Migrations
 
                     b.HasIndex("VisitCreatorId");
 
-                    b.ToTable("Visits");
+                    b.ToTable("Visits", (string)null);
                 });
 
             modelBuilder.Entity("AutoPlusCrm.Data.Models.VisitGrade", b =>
@@ -499,7 +499,7 @@ namespace AutoPlusCrm.Data.Migrations
 
                     b.HasIndex("VisitClassId");
 
-                    b.ToTable("VisitGrades");
+                    b.ToTable("VisitGrades", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

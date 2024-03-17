@@ -12,7 +12,7 @@ namespace AutoPlusCrm.ViewModels
 
 		public int ClientId { get; set; }
 
-		public DateTime DateAndTime { get; set; }
+		public string DateAndTime { get; set; } = string.Empty;
 
 		public string City { get; set; } = string.Empty;
 
