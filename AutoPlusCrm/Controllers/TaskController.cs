@@ -28,7 +28,8 @@ namespace AutoPlusCrm.Controllers
 			{
 				if (selectedStores != null && selectedStores.Length > 0)
 				{
-                    var tasks = await data.Tasks.Where(t => selectedStores.Contains(t.RetailerStore.Name))
+                    var tasks = await data.Tasks
+					.Where(t => selectedStores.Contains(t.RetailerStore.Name))
                     .AsNoTracking()
                     .Include(t => t.ApplicationUser)
                     .Include(t => t.Client)

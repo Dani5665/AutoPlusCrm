@@ -13,7 +13,7 @@ namespace AutoPlusCrm.ViewModels
 
         public string? TakenActions { get; set; } = string.Empty;
 
-        public DateTime DateOfVisit { get; set; }
+        public string DateOfVisit { get; set; } = string.Empty;
 
         public string VisitCreatorId { get; set; } = string.Empty;
 

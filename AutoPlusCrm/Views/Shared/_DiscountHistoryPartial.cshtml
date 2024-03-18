@@ -1,0 +1,8 @@
+﻿@model IList<DiscountHistoryPopupViewModel>
+
+<div>
+    @for (int i = 1; i <= Model.Count; i++)
+    {
+        <h6>@i . Отстъпка: @Model[i - 1].DiscountPersentage% <i class="bi bi-calendar-check-fill"></i> Дата на задаване: @Model[i - 1].Date</h6>
+    }
+</div>

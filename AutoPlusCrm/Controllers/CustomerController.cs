@@ -399,7 +399,9 @@ namespace AutoPlusCrm.Controllers
                 
             var type = selectedType;
 
-            if (user == null)
+			var dateParsed = DateTime.Parse(model.DateOfVisit);
+
+			if (user == null)
             {
                 return BadRequest();
             }
@@ -411,7 +413,7 @@ namespace AutoPlusCrm.Controllers
                     VisitPurpose = model.VisitPurpose,
                     CustomerComments = model.CustomerComments,
                     TakenActions = model.TakenActions,
-                    DateOfVisit = model.DateOfVisit,
+                    DateOfVisit = dateParsed,
                     VisitCreatorId = user.Id,
                     ClientId = id,
                     RetailerStoreId = userdata.UserStore.Id,
@@ -425,6 +427,22 @@ namespace AutoPlusCrm.Controllers
             }
 
             return RedirectToAction("CustomerDetails", "Customer", new { id });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetDiscountHistory(int clientId)
+        {
+            var discounts = await data.MainDiscounts
+                .Where(d => d.ClientId == clientId)
+                .OrderBy(d => d.DateAndTime)
+                .AsNoTracking()
+                .Select(d => new DiscountHistoryPopupViewModel(
+                    d.Id,
+                    d.DiscountPercentage,
+                    d.DateAndTime))
+                .ToListAsync();
+
+            return PartialView("_DiscountHistoryPartial", discounts);
         }
 
         public void PopulateVisitGradeList()

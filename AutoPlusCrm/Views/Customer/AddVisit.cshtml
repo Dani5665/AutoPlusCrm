@@ -43,7 +43,7 @@
 					<h6 class="mb-0">Дата (формат - 2024-5-5 10:00)</h6>
 				</div>
 				<div class="col-sm-9 text-secondary">
-					<input asp-for="@Model.DateOfVisit" type="text" class="form-control" id="userFormControlDateOfVisit">
+					<input asp-for="@Model.DateOfVisit" type="text" id="datepicker" />
 					<span asp-validation-for="@Model.DateOfVisit" class="text-danger"></span>
 				</div>
 			</div>
@@ -89,4 +89,18 @@
 	@{
 		await Html.RenderPartialAsync("_ValidationScriptsPartial");
 	}
+}
+
+@section scripts {
+	<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+
+	<script>
+		$(function () {
+			$("#datepicker").datepicker({
+				minDate: 0, //0 means today
+				dateFormat: "dd/mm/yy" // Set date format
+			});
+		});
+	</script>
+
 }
