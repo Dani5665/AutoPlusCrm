@@ -445,6 +445,22 @@ namespace AutoPlusCrm.Controllers
             return PartialView("_DiscountHistoryPartial", discounts);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetCreditLimitHistory(int clientId)
+        {
+            var creditLimits = await data.CreditLimits
+                .Where(cl => cl.ClientId == clientId)
+                .OrderBy(cl => cl.DateAndTime)
+                .AsNoTracking()
+                .Select(cl => new CreditLimitHistoryPopupViewModel(
+                    cl.Id,
+                    cl.Value,
+                    cl.DateAndTime))
+                .ToListAsync();
+
+            return PartialView("_CreditLimitHistoryPartial", creditLimits);
+        }
+
         public void PopulateVisitGradeList()
         {
             IEnumerable<SelectListItem> getVisitGrades = data.VisitGrades.Select(vg => new SelectListItem()
