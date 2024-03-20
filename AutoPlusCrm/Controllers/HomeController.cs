@@ -29,5 +29,20 @@ namespace ApCrm.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-    }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult ErrorPage(int? statusCode = null)
+		{
+			if (statusCode.HasValue && statusCode.Value == 404)
+			{
+				return View("Error404");
+			}
+            else if (statusCode.HasValue && statusCode.Value == 500)
+            {
+                return View("Error500");
+            }
+			// Handle other error codes if needed
+			return View();
+		}
+	}
 }

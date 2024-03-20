@@ -2,6 +2,7 @@
 using AutoPlusCrm.Data.Models;
 using AutoPlusCrm.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoPlusCrm.Controllers
 {
-	[Authorize]
+    [Authorize]
     public class CustomerController : Controller
     {
         private readonly ApplicationDbContext data;
@@ -22,7 +23,9 @@ namespace AutoPlusCrm.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var customers = await data.Clients
+            if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+            {
+                var customers = await data.Clients
                 .AsNoTracking()
                 .Include(c => c.RetailerStores)
                 .Select(c => new ClientTableDetailsViewModel(
@@ -33,7 +36,34 @@ namespace AutoPlusCrm.Controllers
                     c.RetailerStores))
                 .ToListAsync();
 
-            return View(customers);
+                return View(customers);
+            }
+            else if (User.IsInRole("User"))
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                var customers = await data.Clients
+                .AsNoTracking()
+                .Where(c => c.RetailerStoresId == user.UserStoreId)
+                .Include(c => c.RetailerStores)
+                .Select(c => new ClientTableDetailsViewModel(
+                    c.Id,
+                    c.Name,
+                    c.City,
+                    c.RetailerStoresId,
+                    c.RetailerStores))
+                .ToListAsync();
+
+                return View(customers);
+            }
+            else
+            {
+                return Content("User role not found", "HttpStatusCode.NotFound");
+            }
         }
 
         [HttpGet]
@@ -243,7 +273,7 @@ namespace AutoPlusCrm.Controllers
 
             if (customer == null)
             {
-                return BadRequest();
+                return RedirectToAction("Error404", "Home", 404);
             }
 
             var mainDiscount = customer.MainDiscounts.FirstOrDefault(md => md.Id == customer.MainDiscountId);
@@ -325,7 +355,7 @@ namespace AutoPlusCrm.Controllers
 
             if (customerStore == null)
             {
-                return NotFound();
+                return RedirectToAction("Error404", "Home", 404);
             }
 
             var model = new ClientStoreFormViewModel()
@@ -356,8 +386,8 @@ namespace AutoPlusCrm.Controllers
                 .FindAsync(id);
 
             if(customerStore == null)
-            {  
-                return View("Error"); 
+            {
+                return RedirectToAction("Error404", "Home", 404);
             }
 
             if (!ModelState.IsValid)
@@ -403,7 +433,7 @@ namespace AutoPlusCrm.Controllers
 
 			if (user == null)
             {
-                return BadRequest();
+                return RedirectToAction("Error404", "Home", 404);
             }
 
             if (ModelState.IsValid)

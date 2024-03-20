@@ -1,14 +1,15 @@
-﻿using AutoPlusCrm.Data.Models;
-using AutoPlusCrm.Data;
+﻿using AutoPlusCrm.Data;
+using AutoPlusCrm.Data.Models;
+using AutoPlusCrm.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using AutoPlusCrm.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutoPlusCrm.Controllers
 {
+    [Authorize]
     public class TaskController : Controller
     {
 		private readonly ApplicationDbContext data;
@@ -127,8 +128,8 @@ namespace AutoPlusCrm.Controllers
 
 			if (user == null)
 			{
-				return BadRequest();
-			}
+                return RedirectToAction("Error404", "Home", 404);
+            }
 
 			if (!ModelState.IsValid)
 			{
@@ -162,8 +163,8 @@ namespace AutoPlusCrm.Controllers
 
 			if (task == null)
 			{
-				return BadRequest();
-			}
+                return RedirectToAction("Error404", "Home", 404);
+            }
 
 			task.Iscompleted = true;
 

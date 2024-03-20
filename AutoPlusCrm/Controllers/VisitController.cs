@@ -44,7 +44,10 @@ namespace AutoPlusCrm.Controllers
             {
                 var user = await _userManager.GetUserAsync(User);
 
-                if (user == null) { return BadRequest(); }
+                if (user == null)
+                {
+                    return RedirectToAction("Error404", "Home", 404);
+                }
 
                 var visits = await data.Visits
                     .Where(v => v.RetailerStoreId == user.UserStoreId)
@@ -66,7 +69,7 @@ namespace AutoPlusCrm.Controllers
             }
             else
             {
-                return View();
+                return RedirectToAction("Error404", "Home", 404);
             }
         }
     }

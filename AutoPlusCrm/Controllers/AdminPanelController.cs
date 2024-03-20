@@ -94,8 +94,8 @@ namespace AutoPlusCrm.Controllers
 
 			if (user == null)
 			{
-				return BadRequest();
-			}
+                return RedirectToAction("Error404", "Home", 404);
+            }
 
 			var model = new EditUserViewModel()
 			{
@@ -129,8 +129,8 @@ namespace AutoPlusCrm.Controllers
 
 			if (user == null)
 			{
-				return BadRequest();
-			}
+                return RedirectToAction("Error404", "Home", 404);
+            }
 			if (!ModelState.IsValid)
 			{
 				if (user.UserFullName != model.UserFullName && model.UserFullName != string.Empty && model.UserFullName != null) 
