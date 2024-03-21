@@ -124,5 +124,21 @@ namespace AutoPlusCrm.Controllers
 
 			return RedirectToAction("CustomerDetails", "Customer", new { id = visit.ClientId });
 		}
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteVisit(int visitId)
+        {
+            var visit = await data.Visits.FindAsync(visitId);
+
+            if (visit == null)
+            {
+				return RedirectToAction("Error404", "Home", 404);
+			}
+
+            data.Visits.Remove(visit);
+            await data.SaveChangesAsync();
+
+            return RedirectToAction("CustomerDetails", "Customer", new { id = visit.ClientId });
+        }
 	}
 }
