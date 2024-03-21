@@ -11,5 +11,10 @@ namespace AutoPlusCrm.Data.Models
         public int UserStoreId { get; set; }
 
         public RetailerStores UserStore { get; set; } = null!;
+
+        public int GetUserStoreId()
+        {
+            return UserStoreId;
+        }
     }
 }

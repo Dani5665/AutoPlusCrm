@@ -31,7 +31,7 @@ namespace ApCrm.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult ErrorPage(int? statusCode = null)
+        public IActionResult Error404(int? statusCode = null)
 		{
 			if (statusCode.HasValue && statusCode.Value == 404)
 			{
@@ -41,8 +41,8 @@ namespace ApCrm.Controllers
             {
                 return View("Error500");
             }
-			// Handle other error codes if needed
-			return View();
-		}
+            // Handle other error codes if needed
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
 	}
 }

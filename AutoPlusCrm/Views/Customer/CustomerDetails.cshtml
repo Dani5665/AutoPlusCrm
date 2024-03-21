@@ -1,6 +1,9 @@
 ﻿@model ClientInfoViewModel
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
 @{
     ViewBag.Title = "Детайли на клиент";
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 <hr />
 <h2 class="text-center">Детайли за клиента</h2>
@@ -151,7 +154,10 @@
                     <h5 class="card-title">Извършени действия/противодействия от вас</h5>
                     <p class="card-text">@visit.TakenActions</p>
                     <hr />
-                    <a asp-controller="Visit" asp-action="EditVisit" asp-route-id="@visit.Id" class="btn btn-primary">Edit</a> <a asp-controller="" asp-action="" asp-route-id="@visit.Id" class="btn btn-danger">Delete</a>
+                    @if (visit.VisitCreatorId == userId)
+                    {
+                        <a asp-controller="Visit" asp-action="EditVisit" asp-route-id="@visit.Id" class="btn btn-primary">Edit</a> <button class="btn btn-danger" id="deleteButton" data-visitId="@visit.Id">Delete</button>
+                    }
                 </div>
             </div>
             <br />
@@ -190,6 +196,9 @@
         </div>
     </div>
 </div>
+@* Hidden content for delete confirmation popup *@
+
+
 
 @section Scripts{
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -215,6 +224,30 @@
                     $('#popupCreditLimitContent').html(response);
                     $('#popupCreditLimit').modal('show');
                 });
+            });
+        });
+    </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+            $('#deleteButton').click(function () {
+                var visitId = $(this).data('visitid');
+                if (confirm('Are you sure you want to delete this blog?')) {
+                    $.ajax({
+                        url: '/Visit/DeleteVisit',
+                        type: 'POST',
+                        data: { visitId: visitId },
+                        success: function () {
+                            location.reload();
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                            alert('An error occurred while deleting the blog.');
+                        }
+                    });
+                }
             });
         });
     </script>
