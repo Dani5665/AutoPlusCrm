@@ -2,7 +2,6 @@
 using AutoPlusCrm.Data.Models;
 using AutoPlusCrm.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -262,6 +261,8 @@ namespace AutoPlusCrm.Controllers
         [HttpGet]
         public async Task<IActionResult> CustomerDetails(int id)
         {
+            var user = await _userManager.GetUserAsync(User);
+
             var customer = await data.Clients
                 .Include(c => c.CreditLimits)
                 .Include(c => c.MainDiscounts)
@@ -275,11 +276,19 @@ namespace AutoPlusCrm.Controllers
             {
                 return RedirectToAction("Error404", "Home", 404);
             }
+            else if (user == null)
+            {
+                return RedirectToAction("Error404", "Home", 404);
+            }
+            else if (customer.RetailerStoresId != user.UserStoreId)
+            {
+                return StatusCode(403, "You do not have permission to access this resource.");
+            }
 
             var mainDiscount = customer.MainDiscounts.FirstOrDefault(md => md.Id == customer.MainDiscountId);
             var creditLimit = customer.CreditLimits.FirstOrDefault(cl => cl.Id == customer.CreditLimitId);
             var stores = customer.ClientStore.Where(cs => cs.ClientId == id).ToList();
-            var visits = customer.Visits.Where(v => v.RetailerStoreId == customer.RetailerStoresId).ToList();
+            var visits = customer.Visits.Where(v => v.RetailerStoreId == customer.RetailerStoresId).OrderByDescending(v => v.DateOfVisit).ToList();
 
             var model = new ClientInfoViewModel()
             {
