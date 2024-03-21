@@ -151,7 +151,7 @@
                     <h5 class="card-title">Извършени действия/противодействия от вас</h5>
                     <p class="card-text">@visit.TakenActions</p>
                     <hr />
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <a asp-controller="Visit" asp-action="EditVisit" asp-route-id="@visit.Id" class="btn btn-primary">Edit</a> <a asp-controller="" asp-action="" asp-route-id="@visit.Id" class="btn btn-danger">Delete</a>
                 </div>
             </div>
             <br />

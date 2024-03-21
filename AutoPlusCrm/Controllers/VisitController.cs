@@ -72,5 +72,57 @@ namespace AutoPlusCrm.Controllers
                 return RedirectToAction("Error404", "Home", 404);
             }
         }
-    }
+
+		[HttpGet]
+		public async Task<IActionResult> EditVisit(int id)
+		{
+			var visit = await data.Visits.FindAsync(id);
+
+			if (visit == null)
+			{
+				return RedirectToAction("Error404", "Home", 404);
+			}
+
+			var model = new EditVisitViewModel()
+			{
+				VisitPurpose = visit.VisitPurpose,
+				CustomerComments = visit.CustomerComments,
+				TakenActions = visit.TakenActions,
+				City = visit.City,
+				Region = visit.Region
+			};
+
+			if (!ModelState.IsValid)
+			{
+				return BadRequest();
+			}
+
+			return View(model);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> EditVisit(EditVisitViewModel model, int id)
+		{
+			var visit = await data.Visits.FindAsync(id);
+
+			if (visit == null)
+			{
+				return RedirectToAction("Error404", "Home", 404);
+			}
+			else if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
+
+			visit.VisitPurpose = model.VisitPurpose;
+			visit.CustomerComments = model.CustomerComments;
+			visit.TakenActions = model.TakenActions;
+			visit.City = model.City;
+			visit.Region = model.Region;
+
+			await data.SaveChangesAsync();
+
+			return RedirectToAction("CustomerDetails", "Customer", new { id = visit.ClientId });
+		}
+	}
 }
