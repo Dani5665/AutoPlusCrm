@@ -63,12 +63,18 @@ namespace AutoPlusCrm.Data.Models
         [Comment("List of client stores")]
         public IList<ClientStore> ClientStore { get; set; } = new List<ClientStore>();
 
+        [ForeignKey(nameof(MainDiscount))]
         public int? MainDiscountId { get; set; }
+
+        public MainDiscount MainDiscount { get; set; } = null!;
 
         [Comment("List of dicounts")]
         public IList<MainDiscount> MainDiscounts { get; set; } = new List<MainDiscount>();
 
+        [ForeignKey(nameof(CreditLimit))]
         public int? CreditLimitId { get; set; }
+
+        public CreditLimit CreditLimit { get; set; } = null!;
 
         [Comment("Customer credit limit")]
         public IList<CreditLimit> CreditLimits { get; set; } = new List<CreditLimit>();

@@ -33,7 +33,18 @@ namespace AutoPlusCrm.Data
             .HasForeignKey(ft => ft.RetailerStoreId)
             .OnDelete(DeleteBehavior.Restrict);
 
-		}
+            modelBuilder.Entity<Client>()
+            .HasOne(c => c.MainDiscount)
+            .WithMany()
+            .HasForeignKey(c => c.MainDiscountId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Client>()
+            .HasOne(c => c.CreditLimit)
+            .WithMany()
+            .HasForeignKey(c => c.CreditLimitId)
+            .OnDelete(DeleteBehavior.Restrict);
+        }
 
         public DbSet<Client> Clients { get; set; }
         public DbSet<ClientType> ClientTypes { get; set; }
