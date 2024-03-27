@@ -1,4 +1,5 @@
-﻿using AutoPlusCrm.Data;
+﻿using AutoPlusCrm.Contracts;
+using AutoPlusCrm.Data;
 using AutoPlusCrm.Data.Models;
 using AutoPlusCrm.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -14,26 +15,19 @@ namespace AutoPlusCrm.Controllers
     {
         private readonly ApplicationDbContext data;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IClientService clientService;
 
-        public CustomerController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public CustomerController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IClientService _clientService)
         {
             data = context;
             _userManager = userManager;
+            clientService = _clientService;
         }
         public async Task<IActionResult> Index()
         {
             if (User.IsInRole("Admin") || User.IsInRole("Manager"))
             {
-                var customers = await data.Clients
-                .AsNoTracking()
-                .Include(c => c.RetailerStores)
-                .Select(c => new ClientTableDetailsViewModel(
-                    c.Id,
-                    c.Name,
-                    c.City,
-                    c.RetailerStoresId,
-                    c.RetailerStores))
-                .ToListAsync();
+                var customers = await clientService.GetAllTableViewAsync();
 
                 return View(customers);
             }
@@ -45,19 +39,11 @@ namespace AutoPlusCrm.Controllers
                     return NotFound();
                 }
 
-                var customers = await data.Clients
-                .AsNoTracking()
-                .Where(c => c.RetailerStoresId == user.UserStoreId)
-                .Include(c => c.RetailerStores)
-                .Select(c => new ClientTableDetailsViewModel(
-                    c.Id,
-                    c.Name,
-                    c.City,
-                    c.RetailerStoresId,
-                    c.RetailerStores))
-                .ToListAsync();
+                var customers = await clientService.GetAllTableViewAsync();
+                var filteredCustomers = customers.Where(c => c.RetailerStoreId == user.UserStoreId);
 
-                return View(customers);
+
+                return View(filteredCustomers);
             }
             else
             {
@@ -141,39 +127,12 @@ namespace AutoPlusCrm.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var customer = await data.Clients
-                .Include(c => c.CreditLimits)
-                .Include(c => c.MainDiscounts)
-                .FirstOrDefaultAsync(c => c.Id == id);
+            var model = await clientService.GetFormViewModelByIdAsync(id);
 
-            if (customer == null)
+            if (model == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-
-            var mainDiscount = customer.MainDiscounts.FirstOrDefault(md => md.Id == customer.MainDiscountId);
-            var creditLimit = customer.CreditLimits.FirstOrDefault(cl => cl.Id == customer.CreditLimitId);
-
-            var model = new ClientFormViewModel()
-            {
-                Id = customer.Id,
-                Name = customer.Name,
-                City = customer.City ?? "",
-                Address = customer.Address ?? "",
-                Bulstat = customer.Bulstat ?? "",
-                AccountablePerson = customer.AccountablePerson ?? "",
-                PersonToContact = customer.PersonToContact ?? "",
-                PhoneNumber = customer.PhoneNumber ?? "",
-                Email = customer.Email ?? "",
-                CatalogueUser = customer.CatalogueUser ?? "",
-                CataloguePassword = customer.CataloguePassword ?? "",
-                SkypeUser = customer.SkypeUser ?? "",
-                WebsiteUrl = customer.WebsiteUrl ?? "",
-                MainDiscount = mainDiscount?.DiscountPercentage ?? 0,
-                CreditLimit = creditLimit?.Value ?? 0,
-                DelayedPaymentPeriod = customer.DelayedPaymentPeriod ?? 0,
-                ClientDescription = customer.ClientDescription ?? string.Empty,
-            };
 
             if (!ModelState.IsValid)
             {
@@ -260,21 +219,15 @@ namespace AutoPlusCrm.Controllers
 
         [HttpGet]
         public async Task<IActionResult> CustomerDetails(int id)
+        
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var customer = await data.Clients
-                .Include(c => c.CreditLimits)
-                .Include(c => c.MainDiscounts)
-                .Include(c => c.ClientStore)
-                .Include(c => c.RetailerStores)
-                .Include(c => c.Visits)
-                    .ThenInclude(v => v.VisitCreator)
-                .FirstOrDefaultAsync(c => c.Id == id);
+            var customer = await clientService.GetClientByIdAsync(id);
 
             if (customer == null)
             {
-                return RedirectToAction("Error404", "Home", 404);
+                return NotFound();
             }
             else if (user == null)
             {
