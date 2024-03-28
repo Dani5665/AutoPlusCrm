@@ -115,7 +115,7 @@ namespace AutoPlusCrm.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> EditUser(EditUserViewModel model, string id/*, string selectedRole*/, string selectedStore)
+		public async Task<IActionResult> EditUser(EditUserViewModel model, string id, string selectedStore)
 		{
 			var user = await data.Users
 				.Include(u => u.UserStore)
