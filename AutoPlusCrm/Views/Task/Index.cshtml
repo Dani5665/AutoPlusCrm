@@ -10,19 +10,22 @@
     <div class="btn btn-primary">Добави нова задача<i value="Добави нова задача"></i></div>
 </a>
 <br />
-<div style="margin:auto; width:fit-content">
-    <form asp-controller="Task" asp-action="Index">
-        <label for="retalerStores">Филтрирай по магазин</label>
-        <select id="selectRetailerStores" name="selectedStores" multiple="multiple">
-            @* <option value="">Select Retailer Store</option> *@
-            @foreach (var storeFilter in ViewBag.StoreFilters)
-            {
-                <option value="@storeFilter.Value">@storeFilter.Text</option>
-            }
-        </select>
-        <button type="submit">Filter</button>
-    </form>
-</div>
+@if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+{
+    <div style="margin:auto; width:fit-content">
+        <form asp-controller="Task" asp-action="Index">
+            <label for="retalerStores">Филтрирай по магазин</label>
+            <select id="selectRetailerStores" name="selectedStores" multiple="multiple">
+                @* <option value="">Select Retailer Store</option> *@
+                @foreach (var storeFilter in ViewBag.StoreFilters)
+                {
+                    <option value="@storeFilter.Value">@storeFilter.Text</option>
+                }
+            </select>
+            <button type="submit">Filter</button>
+        </form>
+    </div>
+}
 <hr />
 
 
@@ -42,19 +45,27 @@
                 <hr />
             </div>
             <div class="card-body bg-light" style="padding-top: 0rem !important">
-                <h5 class="card-title">Описание</h5>
+                <h5 class="card-title">Описание на задачата:</h5>
                 <p class="card-text">@task.TaskDescription</p>
-                <hr />
+
                 @if (task.Iscompleted == false)
                 {
-                    <form id="completeTaskForm" method="post" action="@Url.Action("CompleteTask", "Task")">
-                        <input type="hidden" name="taskId" value="@task.Id" />
-                        <button id="completeTaskButton" class="btn btn-outline-secondary" type="button">Завърши задача</button>
-                    </form>
+                    <div style="float:left; padding-top:10px; padding-left:200px">
+                        <form method="post" action="@Url.Action("CompleteTask", "Task")">
+                            <input type="hidden" name="taskId" value="@task.Id" />
+                            <button class="completeTaskButton btn btn-success" type="button">Завърши задачата</button>
+                        </form>
+                    </div>
+                    <div style="float:right; padding-top:10px; padding-right:200px">
+                        <form class="pos" method="post" action="@Url.Action("CompleteTask", "Task")">
+                            <input type="hidden" name="taskId" value="@task.Id" />
+                            <button class="deleteTaskButton btn btn-danger" type="button">Изтрий задачата</button>
+                        </form>
+                    </div>
                 }
                 else
                 {
-                    <button type="button" class="btn btn-success" disabled>Задачата е завършена</button>
+                    <button type="button" class="btn btn-outline-success" disabled>Задачата е завършена</button>
                 }
             </div>
         </div>
@@ -66,8 +77,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
     <script>
-        document.getElementById("completeTaskButton").addEventListener("click", function () {
-            document.getElementById("completeTaskForm").submit();
+        document.querySelectorAll(".completeTaskButton").forEach(function (button) {
+            button.addEventListener("click", function () {
+                button.closest("form").submit();
+            });
         });
     </script>
 
