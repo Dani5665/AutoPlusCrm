@@ -30,6 +30,7 @@ namespace AutoPlusCrm
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddTransient<IClientService, ClientService>();
+            builder.Services.AddTransient<ITaskService, TaskService>();
 
             var app = builder.Build();
 
