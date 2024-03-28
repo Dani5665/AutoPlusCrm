@@ -1,4 +1,5 @@
-﻿using AutoPlusCrm.Data;
+﻿using AutoPlusCrm.Contracts;
+using AutoPlusCrm.Data;
 using AutoPlusCrm.Data.Models;
 using AutoPlusCrm.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -6,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
+using System.Drawing;
 
 namespace AutoPlusCrm.Controllers
 {
@@ -14,11 +17,13 @@ namespace AutoPlusCrm.Controllers
     {
 		private readonly ApplicationDbContext data;
 		private readonly UserManager<ApplicationUser> _userManager;
+		private readonly ITaskService taskService;
 
-		public TaskController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+		public TaskController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ITaskService _taskService)
 		{
 			data = context;
 			_userManager = userManager;
+			taskService = _taskService;
 		}
 
 		public async Task<IActionResult> Index(string[] selectedStores)
@@ -29,50 +34,18 @@ namespace AutoPlusCrm.Controllers
 			{
 				if (selectedStores != null && selectedStores.Length > 0)
 				{
-                    var tasks = await data.Tasks
-					.Where(t => selectedStores.Contains(t.RetailerStore.Name))
-                    .AsNoTracking()
-                    .Include(t => t.ApplicationUser)
-                    .Include(t => t.Client)
-                    .Include(t => t.RetailerStore)
-                    .Select(t => new FutureTaskViewModel(
-                        t.Id,
-                        t.TaskDescription,
-                        t.DateAndTime,
-                        t.City,
-                        t.Region,
-                        t.Iscompleted,
-                        t.ApplicationUserId,
-                        t.ApplicationUser,
-                        t.ClientId,
-                        t.Client,
-                        t.RetailerStoreId,
-                        t.RetailerStore))
-                    .ToListAsync();
+					var tasks = (await taskService.ReturnViewForIndexPageAsync())
+						.Where(t => selectedStores.Contains(t.RetailerStore.Name))
+						.OrderBy(t => t.DateAndTime)
+						.ToList();
 
                     return View(tasks);
                 }
 				else
 				{
-                    var tasks = await data.Tasks
-                    .AsNoTracking()
-                    .Include(t => t.ApplicationUser)
-                    .Include(t => t.Client)
-                    .Include(t => t.RetailerStore)
-                    .Select(t => new FutureTaskViewModel(
-                        t.Id,
-                        t.TaskDescription,
-                        t.DateAndTime,
-                        t.City,
-                        t.Region,
-                        t.Iscompleted,
-                        t.ApplicationUserId,
-                        t.ApplicationUser,
-                        t.ClientId,
-                        t.Client,
-                        t.RetailerStoreId,
-                        t.RetailerStore))
-                    .ToListAsync();
+					var tasks = await taskService.ReturnViewForIndexPageAsync();
+
+					tasks.OrderByDescending(t => t.DateAndTime);
 
                     return View(tasks);
                 }
@@ -80,25 +53,17 @@ namespace AutoPlusCrm.Controllers
 			}
 			else if (User.IsInRole("User"))
 			{
-                var tasks = await data.Tasks
-                    .AsNoTracking()
-                    .Include(t => t.ApplicationUser)
-                    .Include(t => t.Client)
-                    .Include(t => t.RetailerStore)
-                    .Select(t => new FutureTaskViewModel(
-                        t.Id,
-                        t.TaskDescription,
-                        t.DateAndTime,
-                        t.City,
-                        t.Region,
-                        t.Iscompleted,
-                        t.ApplicationUserId,
-                        t.ApplicationUser,
-                        t.ClientId,
-                        t.Client,
-                        t.RetailerStoreId,
-                        t.RetailerStore))
-                    .ToListAsync();
+				var user = await _userManager.GetUserAsync(User);
+
+				if (user == null)
+				{
+					return NotFound();
+				}
+
+				var tasks = (await taskService.ReturnViewForIndexPageAsync())
+					.Where(t => t.RetailerStoreId == user.UserStoreId)
+					.OrderByDescending(t => t.DateAndTime)
+					.ToList();
 
                 return View(tasks);
 			}
@@ -136,17 +101,17 @@ namespace AutoPlusCrm.Controllers
 				return BadRequest();
 			}
 
-			var dateParsed = DateTime.Parse(model.DateAndTime);
-
-			var task = new FutureTask();
-			task.TaskDescription = model.TaskDescription;
-			task.DateAndTime = dateParsed;
-			task.City = model.City;
-			task.Region = model.Region;
-			task.Iscompleted = false;
-			task.ApplicationUserId = user.Id;
-			task.RetailerStoreId = user.UserStoreId;
-			task.ClientId = selectedClient;
+			var task = new FutureTask()
+			{
+				TaskDescription = model.TaskDescription,
+				DateAndTime = DateTime.Parse(model.DateAndTime),
+				City = model.City,
+				Region = model.Region,
+				Iscompleted = false,
+				ApplicationUserId = user.Id,
+				RetailerStoreId = user.UserStoreId,
+				ClientId = selectedClient
+			};
 
 			await data.Tasks.AddAsync(task);
 			await data.SaveChangesAsync();
@@ -157,9 +122,7 @@ namespace AutoPlusCrm.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CompleteTask(int taskId)
 		{
-			var task = await data.Tasks
-				.AsNoTracking()
-				.FirstOrDefaultAsync(t => t.Id == taskId);
+			var task = await taskService.GetTaskByIdAsync(taskId);
 
 			if (task == null)
 			{
@@ -168,10 +131,26 @@ namespace AutoPlusCrm.Controllers
 
 			task.Iscompleted = true;
 
-			await data.SaveChangesAsync();
+            try
+            {
+                var changeTracker = data.ChangeTracker;
+                foreach (var entry in changeTracker.Entries())
+                {
+                    var entity = entry.Entity;
+                    var state = entry.State; // EntityState of the entity
+                                             // Log or inspect entity and its state as needed
+                }
 
-			return RedirectToAction("Index");
-		}
+                await data.SaveChangesAsync();
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                return RedirectToAction("Error500", "Home", 500); // Redirect to a custom error page
+            }
+        }
 
 		//Populates field where user has to choose a client but only shows the clients with the same Retailerstore 
 		public async Task PopulateClientsListAsync()
