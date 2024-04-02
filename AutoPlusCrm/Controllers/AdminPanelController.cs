@@ -67,6 +67,7 @@ namespace AutoPlusCrm.Controllers
 					user.Email = email;
                     user.UserStoreId = store.Id;
                     user.UserFullName = fullName;
+					user.IsActive = true;
 
 					await userManager.CreateAsync(user, password);
 
