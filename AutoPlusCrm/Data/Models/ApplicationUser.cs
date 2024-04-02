@@ -12,6 +12,6 @@ namespace AutoPlusCrm.Data.Models
 
         public RetailerStores UserStore { get; set; } = null!;
 
-        public bool? IsActive { get; set; }
+        public bool IsActive { get; set; }
     }
 }
