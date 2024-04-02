@@ -233,7 +233,7 @@ namespace AutoPlusCrm.Controllers
             {
                 return RedirectToAction("Error404", "Home", 404);
             }
-            else if (customer.RetailerStoresId != user.UserStoreId)
+            else if (User.IsInRole("User") && customer.RetailerStoresId != user.UserStoreId)
             {
                 return StatusCode(403, "You do not have permission to access this resource.");
             }
