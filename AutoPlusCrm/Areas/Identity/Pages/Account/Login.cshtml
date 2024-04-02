@@ -22,6 +22,12 @@
 					<div class="text-center my-5">
 						<img src="/lib/Images/APLogo.jpg" alt="logo" width="200">
 					</div>
+					@if (TempData.ContainsKey("UserIsInactive") && (bool)TempData["UserIsInactive"])
+					{
+						<div id="alertAdded" class="alert alert-danger alert-dismissible fade show" role="alert">
+							Този потребител не е активен.Моля свържете се с администратор!
+						</div>
+					}
 					<div class="card shadow-lg">
 						<div class="card-body p-5">
 							<h1 class="fs-4 card-title fw-bold mb-4">Login</h1>
@@ -73,8 +79,15 @@
 	</section>
 
 	<script src="js/login.js"></script>
+
 	@section Scripts {
 		<partial name="_ValidationScriptsPartial" />
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script>
+			setTimeout(function () {
+				$('#alertAdded').alert('close');
+			}, 10000);
+		</script>
 	}
 </body>
 </html>
