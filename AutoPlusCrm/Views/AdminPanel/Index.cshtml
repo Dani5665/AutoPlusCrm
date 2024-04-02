@@ -10,6 +10,18 @@
     <div class="btn btn-primary">Създай потребител<i value="Създай потребител"></i></div>
 </a>
 <hr />
+@if (TempData.ContainsKey("NewItemAdded") && (bool)TempData["NewItemAdded"])
+{
+    <div id="alertAdded" class="alert alert-primary alert-dismissible fade show" role="alert">
+        Обектът е успешно добавен!
+    </div>
+}
+@if (TempData.ContainsKey("NewItemNotAdded") && (bool)TempData["NewItemNotAdded"])
+{
+    <div id="alertAdded" class="alert alert-danger alert-dismissible fade show" role="alert">
+        Вече има обект с това име!
+    </div>
+}
 
 <div class="card mb-4">
     <div class="card-header">
@@ -52,3 +64,64 @@
     </div>
 </div>
 <br />
+
+<div id="accordion">
+    <form asp-action="AddRetailerStore" asp-controller="AdminPanel" method="post">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-light collapsed" data-toggle="collapse" data-target="#addRetailerStore" aria-expanded="false" aria-controls="addRetailerStore" disabled>
+                        Добави нов магазин към списъка - таблица RetailerStores
+                    </button>
+                </h5>
+            </div>
+
+            <div id="addRetailerStore" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    <div class="input-group mb-3" style="width:1200px">
+                        <input id="retailerStoreInput" name="retailerStoreInput" type="text" class="form-control" placeholder="Въведи име на магазина" aria-label="Въведи име на магазина" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary" type="submit">Добави</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <form asp-action="AddClientType" asp-controller="AdminPanel" method="post">
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-light collapsed" data-toggle="collapse" data-target="#addClientType" aria-expanded="false" aria-controls="addClientType" disabled>
+                        Добави нов тип клиент - таблица ClientTypes
+                    </button>
+                </h5>
+            </div>
+            <div id="addClientType" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                    <div class="input-group mb-3" style="width:1200px">
+                        <input id="clientTypeInput" name="clientTypeInput" type="text" class="form-control" placeholder="Въведи нов тип клиент" aria-label="Въведи нов тип клиент" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary" type="submit">Добави</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('.btn-link').click(function () {
+                $($(this).data('target')).collapse('toggle');
+            });
+        });
+    </script>
+    <script>
+        setTimeout(function () {
+            $('#alertAdded').alert('close');
+        }, 10000);
+    </script>
+}

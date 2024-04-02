@@ -166,6 +166,53 @@ namespace AutoPlusCrm.Controllers
 			return RedirectToAction("Index","AdminPanel");
 		}
 
+		[HttpPost]
+		public async Task<IActionResult> AddRetailerStore(string retailerStoreInput)
+		{
+			var storeExists = await data.RetailerStores.FirstOrDefaultAsync(se => se.Name == retailerStoreInput);
+
+			if (storeExists == null)
+			{
+				var newStore = new RetailerStores()
+				{
+					Name = retailerStoreInput
+				};
+				await data.RetailerStores.AddAsync(newStore);
+				await data.SaveChangesAsync();
+
+                TempData["NewItemAdded"] = true;
+            }
+			else
+			{
+                TempData["NewItemNotAdded"] = true;
+            }
+			return RedirectToAction("Index");
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> AddClientType(string clientTypeInput)
+		{
+			var typeExists = await data.ClientTypes.FirstOrDefaultAsync(te => te.Type == clientTypeInput);
+
+			if (typeExists == null)
+			{
+				var newType = new ClientType()
+				{
+					Type = clientTypeInput
+				};
+				await data.ClientTypes.AddAsync(newType);
+				await data.SaveChangesAsync();
+
+                TempData["NewItemAdded"] = true;
+            }
+			else
+			{
+                TempData["NewItemNotAdded"] = true;
+            }
+
+			return RedirectToAction("Index");
+		}
+
 		public void PopulateUserRolesList()
 		{
 			var roles = roleManager.Roles.ToList();
