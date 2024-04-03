@@ -58,7 +58,6 @@ namespace AutoPlusCrm
             }
             else
             {
-                app.UseExceptionHandler("/Home/ErrorPage/500");
                 app.UseStatusCodePagesWithRedirects("/Home/ErrorPage?statusCode={0}");
                 app.UseHsts();
             }
