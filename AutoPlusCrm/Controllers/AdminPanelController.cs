@@ -32,7 +32,8 @@ namespace AutoPlusCrm.Controllers
                     u.Id,
                     u.Email,
                     u.UserFullName,
-                    u.UserStore.Name))
+                    u.UserStore.Name,
+					u.IsActive))
                 .ToListAsync();
 
             return View(users);
@@ -100,11 +101,13 @@ namespace AutoPlusCrm.Controllers
 
 			var model = new EditUserViewModel()
 			{
+				Id = user.Id,
 				UserFullName = user.UserFullName,
 				UserStore = user.UserStore.Name,
 				UserEmail = user.Email,
 				UserRole = userRole.First(),
-				UserPassword = string.Empty
+				UserPassword = string.Empty,
+				IsActive = user.IsActive
 			};
 
 			if (!ModelState.IsValid)
@@ -214,7 +217,39 @@ namespace AutoPlusCrm.Controllers
 			return RedirectToAction("Index");
 		}
 
-		public void PopulateUserRolesList()
+		[HttpPost]
+		public async Task<IActionResult> SetUserToActive(string userId)
+		{
+			var user = await data.Users.FindAsync(userId);
+
+			if (user == null)
+			{
+				return NotFound();
+			}
+			user.IsActive = true;
+
+			await data.SaveChangesAsync();
+
+			return RedirectToAction("Index");
+		}
+
+        [HttpPost]
+        public async Task<IActionResult> SetUserToInactive(string id)
+        {
+            var user = await data.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            user.IsActive = false;
+
+            await data.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
+        public void PopulateUserRolesList()
 		{
 			var roles = roleManager.Roles.ToList();
 			ViewBag.UserRoles = new SelectList(roles, "Name", "Name");

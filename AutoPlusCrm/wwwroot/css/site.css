@@ -36,3 +36,11 @@ body {
     margin-bottom: 40px;
 }
 
+.table-custom-active-td {
+    background-color: lightgreen !important;
+}
+
+.table-custom-inactive-td {
+    background-color: indianred !important;
+}
+

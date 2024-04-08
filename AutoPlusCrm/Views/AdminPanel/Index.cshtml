@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<UsersTableDetailsViewModel>
 @{
     ViewData["Title"] = "Админ панел";
+    
 }
 <br />
 <h1 class="text-center">Админ панел</h1>
@@ -29,13 +30,13 @@
         Списък с клиенти
     </div>
     <div class="card-body">
-        <table id="datatablesSimple">
+        <table id="datatablesSimple" class="table">
             <thead>
                 <tr>
                     <th>Име</th>
                     <th>Имейл</th>
                     <th>Магазин</th>
-                    <th>-</th>
+                    <th>Статус</th>
                     <th>-</th>
                 </tr>
             </thead>
@@ -44,7 +45,7 @@
                     <th>Име</th>
                     <th>Имейл</th>
                     <th>Магазин</th>
-                    <th>-</th>
+                    <th>Статус</th>
                     <th>-</th>
                 </tr>
             </tfoot>
@@ -55,7 +56,18 @@
                         <td>@u.UserEmail</td>
                         <td>@u.UserFullName</td>
                         <td>@u.UserStore</td>
-                        <td><a asp-controller="AdminPanel" asp-action="UserDetails" asp-route-id="@u.Id"> Виж</a></td>
+                        @if (u.IsActive == true)
+                        {
+                            <td>
+                                <p style="color:green">Активен</p>
+                            </td>
+                        }
+                        @if (u.IsActive == false)
+                        {
+                            <td>
+                                <p style="color:red">Неактивен</p>
+                            </td>
+                        }
                         <td><a asp-controller="AdminPanel" asp-action="EditUser" asp-route-id="@u.Id"> Редактирай</a></td>
                     </tr>
                 }

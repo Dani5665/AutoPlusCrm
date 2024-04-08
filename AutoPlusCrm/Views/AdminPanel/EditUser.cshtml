@@ -10,7 +10,7 @@
 		<form asp-controller="AdminPanel" asp-action="EditUser" method="post">
 			<div class="row mb-3">
 				<div class="col-sm-3">
-					<h6 class="mb-0">Имена</h6>
+					<h6 class="mb-0">Имена - @Model.Id</h6>
 				</div>
 				<div class="col-sm-9 text-secondary">
 					<input asp-for="@Model.UserFullName" type="text" class="form-control" id="userFormControlFullName">
@@ -58,6 +58,21 @@
 				</div>
 			</div>
 		</form>
+		@if (Model.IsActive == true)
+		{
+			<form asp-controller="AdminPanel" asp-action="SetUserToInactive" asp-route-id="@Model.Id" method="post">
+				<input type="hidden" name="userId" value="@Model.Id" />
+				<button type="submit" class="btn btn-danger">Деактивирай профила</button>
+			</form>
+		}
+		@if (Model.IsActive == false)
+		{
+			<form asp-controller="AdminPanel" asp-action="SetUserToActive" asp-route-id="@Model.Id" method="post">
+				<input type="hidden" name="userId" value="@Model.Id" />
+				<button type="submit" class="btn btn-primary">Активирай профила</button>
+			</form>
+		}
+
 	</div>
 </div>
 @section ValidationScripts {

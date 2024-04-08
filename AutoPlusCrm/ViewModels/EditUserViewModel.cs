@@ -23,5 +23,7 @@ namespace AutoPlusCrm.ViewModels
 
 		[Required]
 		public string UserRole { get; set; } = null!;
+
+		public bool IsActive { get; set; }
 	}
 }
