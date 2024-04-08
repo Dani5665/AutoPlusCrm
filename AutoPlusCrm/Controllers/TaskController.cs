@@ -61,7 +61,7 @@ namespace AutoPlusCrm.Controllers
 				}
 
 				var tasks = (await taskService.ReturnViewForIndexPageAsync())
-					.Where(t => t.RetailerStoreId == user.UserStoreId)
+					.Where(t => t.ApplicationUserId == user.Id)
 					.OrderByDescending(t => t.DateAndTime)
 					.ToList();
 
@@ -131,25 +131,10 @@ namespace AutoPlusCrm.Controllers
 
 			task.Iscompleted = true;
 
-            try
-            {
-                var changeTracker = data.ChangeTracker;
-                foreach (var entry in changeTracker.Entries())
-                {
-                    var entity = entry.Entity;
-                    var state = entry.State; // EntityState of the entity
-                                             // Log or inspect entity and its state as needed
-                }
+            await data.SaveChangesAsync();
 
-                await data.SaveChangesAsync();
-
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it appropriately
-                return RedirectToAction("Error500", "Home", 500); // Redirect to a custom error page
-            }
+            return RedirectToAction("Index");
+            
         }
 
 		//Populates field where user has to choose a client but only shows the clients with the same Retailerstore 
