@@ -1,44 +1,38 @@
-﻿using AutoPlusCrm.Data.Models;
+﻿using AutoPlusCrm.Contracts;
 using AutoPlusCrm.Data;
+using AutoPlusCrm.Data.Models;
+using AutoPlusCrm.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using AutoPlusCrm.ViewModels;
 
 namespace AutoPlusCrm.Controllers
 {
-    [Authorize]
+	[Authorize]
     public class VisitController : Controller
     {
         private readonly ApplicationDbContext data;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IVisitService visitService;
 
-        public VisitController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public VisitController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IVisitService _visitService)
         {
             data = context;
             _userManager = userManager;
+            visitService = _visitService;
         }
-        public async Task<IActionResult> Index()
+
+		public async Task<IActionResult> Index()
         {
             if (User.IsInRole("Admin") || User.IsInRole("Manager"))
             {
-                var visits = await data.Visits
-                    .Include(v => v.Client)
-                    .Include(v => v.ClientType)
-                    .Include(v => v.RetailerStore)
-                    .Select(v => new VisitTableViewModel(
-                        v.Id,
-                        v.DateOfVisit,
-                        v.Client,
-                        v.RetailerStore,
-                        v.City,
-                        v.Region,
-                        v.ClientType
-                    ))
-                    .ToListAsync();
+                var visits = await visitService.GetAllTableViewAsync();
 
-                return View(visits);
+				var orderedVisits = visits
+					.OrderByDescending(v => v.DateOfVisit)
+					.ToList();
+
+				return View(orderedVisits);
             }
             else if (User.IsInRole("User"))
             {
@@ -49,23 +43,15 @@ namespace AutoPlusCrm.Controllers
                     return RedirectToAction("Error404", "Home", 404);
                 }
 
-                var visits = await data.Visits
-                    .Where(v => v.RetailerStoreId == user.UserStoreId)
-                    .Include(v => v.Client)
-                    .Include(v => v.ClientType)
-                    .Include(v => v.RetailerStore)
-                    .Select(v => new VisitTableViewModel(
-                        v.Id,
-                        v.DateOfVisit,
-                        v.Client,
-                        v.RetailerStore,
-                        v.City,
-                        v.Region,
-                        v.ClientType
-                    ))
-                    .ToListAsync();
+                var visits = await visitService.GetAllTableViewAsync();
 
-                return View(visits);
+				var sortedVisits = visits
+					.Where(v => v.RetailerStore.Id == user.UserStoreId)
+					.OrderByDescending(v => v.DateOfVisit)
+					.ToList();
+
+
+				return View(sortedVisits);
             }
             else
             {
@@ -76,7 +62,7 @@ namespace AutoPlusCrm.Controllers
 		[HttpGet]
 		public async Task<IActionResult> EditVisit(int id)
 		{
-			var visit = await data.Visits.FindAsync(id);
+			var visit = await visitService.GetVisitByIdAsync(id);
 
 			if (visit == null)
 			{
@@ -103,7 +89,7 @@ namespace AutoPlusCrm.Controllers
 		[HttpPost]
 		public async Task<IActionResult> EditVisit(EditVisitViewModel model, int id)
 		{
-			var visit = await data.Visits.FindAsync(id);
+			var visit = await visitService.GetVisitByIdAsync(id);
 
 			if (visit == null)
 			{
@@ -128,9 +114,9 @@ namespace AutoPlusCrm.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteVisit(int visitId)
         {
-            var visit = await data.Visits.FindAsync(visitId);
+            var visit = await visitService.GetVisitByIdAsync(visitId);
 
-            if (visit == null)
+			if (visit == null)
             {
 				return RedirectToAction("Error404", "Home", 404);
 			}

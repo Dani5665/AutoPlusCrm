@@ -1,3 +1,4 @@
+using ApCrm.Services;
 using AutoPlusCrm.Contracts;
 using AutoPlusCrm.Data;
 using AutoPlusCrm.Data.Models;
@@ -7,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoPlusCrm
 {
-    public class Program
+	public class Program
     {
         public static async Task Main(string[] args)
         {
@@ -31,6 +32,7 @@ namespace AutoPlusCrm
             builder.Services.AddControllersWithViews();
             builder.Services.AddTransient<IClientService, ClientService>();
             builder.Services.AddTransient<ITaskService, TaskService>();
+            builder.Services.AddTransient<IVisitService, VisitService>();
 
             var app = builder.Build();
 

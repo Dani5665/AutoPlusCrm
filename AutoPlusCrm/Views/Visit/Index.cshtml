@@ -1,28 +1,7 @@
 ﻿@model IList<VisitTableViewModel>
 @{
     ViewData["Title"] = "Visits";
-
-    var ViewModel = new BreadcrumbViewModel
-            {
-                PageTitle = "Visits",
-                BreadcrumbItems = new List<BreadcrumbItem>
-        {
-           new BreadcrumbItem {
-                ControllerName = "Home",
-                ActionName = "Visits"
-            },
-            // new BreadcrumbItem
-            // {
-            //     ControllerName = "Home",
-            //     ActionName = "Create"
-            // }
-        }
-            };
 }
-
-
-@Html.Partial("_BreadcrumbsHeader", @ViewModel)
-
 
 <div class="card mb-4">
     <div class="card-header">
