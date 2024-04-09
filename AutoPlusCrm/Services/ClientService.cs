@@ -48,7 +48,15 @@ namespace AutoPlusCrm.Services
             return client;
         }
 
-        public async Task<ClientFormViewModel> GetFormViewModelByIdAsync(int id)
+		public async Task<ClientStore> GetClientStoresByIdAsync(int id)
+		{
+			var store = await data.Stores
+				.FindAsync(id);
+
+            return store;
+		}
+
+		public async Task<ClientFormViewModel> GetFormViewModelByIdAsync(int id)
         {
             var customer = await data.Clients
                 .Include(c => c.CreditLimit)

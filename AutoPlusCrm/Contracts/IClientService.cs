@@ -10,5 +10,7 @@ namespace AutoPlusCrm.Contracts
         Task<Client> GetClientByIdAsync(int id);
 
         Task<ClientFormViewModel> GetFormViewModelByIdAsync(int id);
+
+        Task<ClientStore> GetClientStoreByIdAsync(int id);
     }
 }

@@ -312,8 +312,7 @@ namespace AutoPlusCrm.Controllers
         [HttpGet]
         public async Task<IActionResult> EditCustomerStore(int id)
         {
-            var customerStore = await data.Stores
-                .FindAsync(id);
+            var customerStore = await clientService.GetClientStoreByIdAsync(id);
 
             if (customerStore == null)
             {
@@ -344,10 +343,9 @@ namespace AutoPlusCrm.Controllers
         [HttpPost]
         public async Task<IActionResult> EditCustomerStore(ClientStoreFormViewModel model, int id)
         {
-            var customerStore = await data.Stores
-                .FindAsync(id);
+            var customerStore = await clientService.GetClientStoreByIdAsync(id);
 
-            if(customerStore == null)
+			if (customerStore == null)
             {
                 return RedirectToAction("Error404", "Home", 404);
             }
