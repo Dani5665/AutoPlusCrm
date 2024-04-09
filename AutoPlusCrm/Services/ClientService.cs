@@ -2,14 +2,12 @@
 using AutoPlusCrm.Data;
 using AutoPlusCrm.Data.Models;
 using AutoPlusCrm.ViewModels;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AutoPlusCrm.Services
 {
-    public class ClientService : IClientService
+	public class ClientService : IClientService
     {
         private readonly ApplicationDbContext data;
         private readonly UserManager<ApplicationUser> userManager;
@@ -48,7 +46,7 @@ namespace AutoPlusCrm.Services
             return client;
         }
 
-		public async Task<ClientStore> GetClientStoresByIdAsync(int id)
+		public async Task<ClientStore> GetClientStoreByIdAsync(int id)
 		{
 			var store = await data.Stores
 				.FindAsync(id);
